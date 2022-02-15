@@ -8,8 +8,9 @@
 .vscode
 src/
 
-.yarnrc.yml
+cypress/screenshots
 
+.yarnrc.yml
 
 
 .yarn/*
