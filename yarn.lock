@@ -9715,6 +9715,11 @@ has-glob@^1.0.0:
   dependencies:
     is-glob "^3.0.0"
 
+has-package-lock@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/has-package-lock/-/has-package-lock-2.0.0.tgz#ef17834efe6329c7f5c7ab2504f2689ccebcccfe"
+  integrity sha512-WgXMr+2TZipDVdbxLo2G16P56GEGiZO7xO9faWkdXQ8t7GGodS61/bIrwbWc1H15bOAYQSYBb9Z4785Q/GpXeA==
+
 has-symbols@^1.0.1, has-symbols@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/has-symbols/-/has-symbols-1.0.2.tgz#165d3070c00309752a1236a479331e3ac56f1423"
