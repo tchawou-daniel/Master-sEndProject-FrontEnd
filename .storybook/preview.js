@@ -10,19 +10,19 @@ import {SnackbarProvider} from "notistack";
 
 export const decorators = [
   Story => (
-    <MuiThemeProvider>
-      <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment}>
-        <SnackbarProvider>
-              <CssBaseline />
-              <Container>
-                <Box mt={3}>
-                  <MemoryRouter initialEntries={['/']}>
-                    <Story />
-                  </MemoryRouter>
-                </Box>
-              </Container>
-        </SnackbarProvider>
-      </MuiPickersUtilsProvider>
-    </MuiThemeProvider>
+      <MuiThemeProvider>
+        <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment}>
+          <SnackbarProvider>
+            <CssBaseline />
+            <Container>
+              <Box mt={3}>
+                <MemoryRouter initialEntries={['/']}>
+                  <Story />
+                </MemoryRouter>
+              </Box>
+            </Container>
+          </SnackbarProvider>
+        </MuiPickersUtilsProvider>
+      </MuiThemeProvider>
   ),
 ];
