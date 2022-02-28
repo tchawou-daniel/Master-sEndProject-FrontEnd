@@ -29,12 +29,12 @@
     "types": ["cypress", "@testing-library/cypress"]
   },
   "include": [
-    "./src/*/*.ts",
-    "./src/*/*.tsx",
-    "./src/*/*.jsx",
-    "./cypress/*/*.js",
-    "./cypress/*/*.ts",
-    "./scripts/*/*.js",
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.jsx",
+    "./cypress/**/*.js",
+    "./cypress/**/*.ts",
+    "./scripts/**/*.js",
   ],
   "exclude": [
     "node_modules"
