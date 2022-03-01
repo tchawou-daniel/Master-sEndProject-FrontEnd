@@ -1,44 +1,42 @@
 {
-    "compilerOptions": {
-      "module": "esnext",
-      "declaration": true,
-      "removeComments": true,
-      "esModuleInterop": true,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "target": "es6",
-      "sourceMap": true,
-      "outDir": "./dist",
-      "baseUrl": "./src",
-      "skipLibCheck": true,
-      "jsx": "react",
-      "lib": [
-        "dom",
-        "dom.iterable",
-        "esnext"
-      ],
-      "allowJs": true,
-      "allowSyntheticDefaultImports": true,
-      "strict": true,
-      "forceConsistentCasingInFileNames": true,
-      "moduleResolution": "node",
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "noEmit": true,
-      "noFallthroughCasesInSwitch": true,
-      "types": ["cypress", "@testing-library/cypress"]
-    },
-    "include": [
-      "./src/*/.ts",
-      "./src/*/.tsx",
-      "./src/*/.js",
-      "./src/*/.jsx",
-      "./cypress/*/.js",
-      "./cypress/*/.ts",
-      "./scripts/*/.js",
-      "./config-overrides.js"
+  "compilerOptions": {
+    "module": "esnext",
+    "declaration": true,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "skipLibCheck": true,
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
     ],
-    "exclude": [
-      "node_modules"
-    ]
-  }
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "types": ["cypress", "@testing-library/cypress"]
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.jsx",
+    "./cypress/**/*.js",
+    "./cypress/**/*.ts",
+    "./scripts/**/*.js",
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
