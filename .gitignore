@@ -10,6 +10,8 @@
 cypress/screenshots
 
 .yarnrc.yml
+.progress
+.prettierrc
 
 
 .yarn/*

@@ -6,7 +6,7 @@ import MaterialIconButton from '@material-ui/core/IconButton/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { FC, memo, useMemo } from 'react';
-import {colors, EmpreinttThemeType} from "../theme";
+import {colors, EmpreinttThemeType} from "../../theme";
 
 
 export const useCommonButtonStyles = makeStyles(() => ({
