@@ -1,13 +1,10 @@
-import {
-  CircularProgress, IconButtonProps, Tooltip,
-} from '@material-ui/core';
+import { CircularProgress, IconButtonProps, Tooltip } from '@material-ui/core';
 import MaterialUiButton, { ButtonProps } from '@material-ui/core/Button';
 import MaterialIconButton from '@material-ui/core/IconButton/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { FC, memo, useMemo } from 'react';
-import {colors, EmpreinttThemeType} from "../../theme";
-
+import { colors, EmpreinttThemeType } from '../../theme';
 
 export const useCommonButtonStyles = makeStyles(() => ({
   smallIconButton: {
@@ -71,8 +68,7 @@ const useButtonStyles = makeStyles((theme: EmpreinttThemeType) => ({
     },
     '&$outlined': {
       // borderColor: 'rgba(0, 0, 0, 0.54)',
-      '&:hover': {
-      },
+      '&:hover': {},
     },
   },
   primary: {
@@ -215,79 +211,69 @@ interface EmpreinttButtonProps extends Omit<ButtonProps, 'color'> {
 }
 
 const Button: FC<EmpreinttButtonProps> = ({
-                                         variant,
-                                         color,
-                                         noColor,
-                                         size,
-                                         children,
-                                         className,
-                                         tooltipTitle,
-                                         ...props
-                                       }) => {
+  variant,
+  color,
+  noColor,
+  size,
+  children,
+  className,
+  tooltipTitle,
+  ...props
+}) => {
   const classes = useButtonStyles();
 
-  const computedClassName = useMemo(() => clsx(
-      // Eventual override.
-      className,
-      // Default style.
-      classes.rootButton,
-      // Size.
-      size ? classes[size as 'small' | 'medium' | 'expanded' | 'large'] : classes.medium,
-      // Color.
-      !noColor && classes[color || 'primary'],
-      // Outlined.
-      variant === 'outlined' && classes.outlined,
-  ), [variant, color, size, classes, className, noColor]);
+  const computedClassName = useMemo(
+    () =>
+      clsx(
+        // Eventual override.
+        className,
+        // Default style.
+        classes.rootButton,
+        // Size.
+        size
+          ? classes[size as 'small' | 'medium' | 'expanded' | 'large']
+          : classes.medium,
+        // Color.
+        !noColor && classes[color || 'primary'],
+        // Outlined.
+        variant === 'outlined' && classes.outlined,
+      ),
+    [variant, color, size, classes, className, noColor],
+  );
 
   const render = (
-      <MaterialUiButton
-          variant={variant || (noColor ? undefined : 'contained')}
-          className={computedClassName}
-          disableElevation
-          {...props}
-      >
-        {children}
-      </MaterialUiButton>
+    <MaterialUiButton
+      variant={variant || (noColor ? undefined : 'contained')}
+      className={computedClassName}
+      disableElevation
+      {...props}
+    >
+      {children}
+    </MaterialUiButton>
   );
 
   // Eventually wrap into the tooltip if needed.
   return tooltipTitle ? (
-      <Tooltip title={tooltipTitle}>
-        {render}
-      </Tooltip>
-  ) : render;
+    <Tooltip title={tooltipTitle}>{render}</Tooltip>
+  ) : (
+    render
+  );
 };
 
-export const DefaultActionButton: FC<EmpreinttButtonProps> = props => (
-    <Button
-        {...props}
-        variant="contained"
-        color="primary"
-    />
+export const DefaultActionButton: FC<EmpreinttButtonProps> = (props) => (
+  <Button {...props} variant="contained" color="primary" />
 );
 
-export const TertiaryBlockButton: FC<EmpreinttButtonProps> = props => (
-    <Button
-        {...props}
-        variant="contained"
-        color="tertiary"
-    />
+export const TertiaryBlockButton: FC<EmpreinttButtonProps> = (props) => (
+  <Button {...props} variant="contained" color="tertiary" />
 );
 
-export const TertiaryButton: FC<EmpreinttButtonProps> = props => (
-    <Button
-        {...props}
-        variant="outlined"
-        color="tertiary"
-    />
+export const TertiaryButton: FC<EmpreinttButtonProps> = (props) => (
+  <Button {...props} variant="outlined" color="tertiary" />
 );
 
-export const CancelButton: FC<EmpreinttButtonProps> = props => (
-    <Button
-        {...props}
-        variant="outlined"
-        color="default"
-    />
+export const CancelButton: FC<EmpreinttButtonProps> = (props) => (
+  <Button {...props} variant="outlined" color="default" />
 );
 
 export default Button;
@@ -300,53 +286,56 @@ interface EmpreinttIconButtonProps extends Omit<IconButtonProps, 'color'> {
   loading?: boolean;
 }
 
-export const IconButton: FC<EmpreinttIconButtonProps> = memo(({
-                                                             color,
-                                                             children,
-                                                             variant,
-                                                             tooltipTitle,
-                                                             className,
-                                                             loading,
-                                                             ...props
-                                                           }) => {
-  const classes = useButtonStyles();
+export const IconButton: FC<EmpreinttIconButtonProps> = memo(
+  ({
+    color,
+    children,
+    variant,
+    tooltipTitle,
+    className,
+    loading,
+    ...props
+  }) => {
+    const classes = useButtonStyles();
 
-  const computedClassName = useMemo(() => clsx(
-      // Eventual override.
-      className,
-      // Color.
-      classes[color || 'default'],
-      // Outlined.
-      (variant === 'outlined' || variant === 'iconOnly') && classes.outlined,
-      // Icon Only
-      variant === 'iconOnly' && classes.iconOnly,
-  ), [variant, color, classes, className]);
+    const computedClassName = useMemo(
+      () =>
+        clsx(
+          // Eventual override.
+          className,
+          // Color.
+          classes[color || 'default'],
+          // Outlined.
+          (variant === 'outlined' || variant === 'iconOnly') &&
+            classes.outlined,
+          // Icon Only
+          variant === 'iconOnly' && classes.iconOnly,
+        ),
+      [variant, color, classes, className],
+    );
 
-  const ariaLabel = props['aria-label'] || tooltipTitle || undefined;
+    const ariaLabel = props['aria-label'] || tooltipTitle || undefined;
 
-  const render = (
+    const render = (
       <MaterialIconButton
-          className={computedClassName}
-          {...props}
-          aria-label={ariaLabel}
+        className={computedClassName}
+        {...props}
+        aria-label={ariaLabel}
       >
         {children}
         {loading && <CircularProgress size={48} className={classes.progress} />}
       </MaterialIconButton>
-  );
+    );
 
-  // Eventually wrap into the tooltip if needed.
-  return tooltipTitle ? (
-      <Tooltip title={tooltipTitle}>
-        {render}
-      </Tooltip>
-  ) : render;
-});
-
-export const DefaultActionIconButton: FC<EmpreinttIconButtonProps> = props => (
-    <IconButton
-        {...props}
-        variant="iconOnly"
-        color="default"
-    />
+    // Eventually wrap into the tooltip if needed.
+    return tooltipTitle ? (
+      <Tooltip title={tooltipTitle}>{render}</Tooltip>
+    ) : (
+      render
+    );
+  },
 );
+
+export const DefaultActionIconButton: FC<EmpreinttIconButtonProps> = (
+  props,
+) => <IconButton {...props} variant="iconOnly" color="default" />;

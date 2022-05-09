@@ -10,9 +10,6 @@
 cypress/screenshots
 
 .yarnrc.yml
-.progress
-.prettierrc
-
 
 .yarn/*
 !.yarn/cache
@@ -20,3 +17,6 @@ cypress/screenshots
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
+
+.progress
+.prettierrc
