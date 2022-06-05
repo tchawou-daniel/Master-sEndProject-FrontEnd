@@ -1,21 +1,16 @@
 import AppBar from '@material-ui/core/AppBar';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Switch from '@material-ui/core/Switch';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import { User, UserRole } from '../../../../../types/users';
-import useCurrentUser from '../../../../common/useCurrentUser';
 import { empreinttTheme } from '../../../theme';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -51,13 +46,9 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
   user,
 }) => {
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAuth(event.target.checked);
-  };
-
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -68,6 +59,7 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
 
   // eslint-disable-next-line consistent-return
   const menu = (currentUser: User | undefined) => {
+    console.log(user);
     switch (currentUser?.role) {
       case UserRole.ADMIN:
         return (

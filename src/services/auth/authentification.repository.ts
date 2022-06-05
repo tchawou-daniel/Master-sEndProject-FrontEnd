@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import http from 'services/http';
 
-import config from '../../config';
 import { User } from '../../types/users';
 
 export async function addUser(user: Partial<User>): Promise<User> {
