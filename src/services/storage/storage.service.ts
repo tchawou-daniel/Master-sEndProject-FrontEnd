@@ -1,6 +1,4 @@
-import { User } from '@amal-ia/lib-types';
-
-import { LOCAL_STORAGE_MOCK_TOKEN_KEY } from 'react/views/User/auth/testAuth';
+import { User } from '../../types/users';
 
 const LOCAL_STORAGE_COMPANY_ID_KEY = 'companyId';
 const LOCAL_STORAGE_USER_ID_KEY = 'userId';
@@ -12,11 +10,6 @@ const LOCAL_STORAGE_USER_ID_KEY = 'userId';
 export const checkLocalStorageOnLoad = (
   currentUser: User,
 ) => {
-  // Do not clear storage in Cypress tests, or else the robot won't be able to authenticate.
-  if (localStorage.getItem(LOCAL_STORAGE_MOCK_TOKEN_KEY)) {
-    return;
-  }
-
   const currentUserTyped = (currentUser as User & { company?: { id: string }, companyId?: string });
 
   const currentUserCompanyId = currentUserTyped.companyId || currentUserTyped.company?.id;

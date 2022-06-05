@@ -6,20 +6,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { LockOutlined } from '@material-ui/icons';
 import { useFormik } from 'formik';
-import React, { FC, useEffect, useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { useDispatch } from 'react-redux';
-import { Redirect, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { useThunkDispatch } from '../../../../redux/store';
-import { fetchCurrentUser } from '../../../../redux/users/actions';
-import { getUserToken } from '../../../../services/auth/authentification.repository';
-import http from '../../../../services/http';
 import { User } from '../../../../types/users';
 import { empreinttTheme } from '../../../ui/theme';
 
 const validationSchema = yup.object({
+  firstName: yup.string().required('Please enter your First Name'),
+  lastName: yup.string().required('Please enter your Last Name'),
   email: yup
     .string()
     .email('Enter a valid email')
@@ -36,35 +32,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Login:FC = () => {
+const Register = () => {
   const classes = useStyles();
-  const history = useHistory();
-  const dispatch = useThunkDispatch();
 
-  const [signedInSuccess, setSignedInSuccess] = useState<boolean>(false);
-
-  // const signInAndFetchUser = (isSignIn:boolean) => async () => {
-  //   if (isSignIn) dispatch(fetchCurrentUser());
-  // };
   const formik = useFormik({
     initialValues: {
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
     },
     validationSchema,
-    // eslint-disable-next-line consistent-return
     onSubmit: async (userToAdd:Partial<User>) => {
-      try {
-        const token = await getUserToken(userToAdd);
-        http.setJwt(token.data.accessToken);
-        localStorage.setItem('MY_USER_EMAIL', userToAdd.email!);
-        await dispatch(fetchCurrentUser());
-        // setSignedInSuccess(true);
-        // signInAndFetchUser(signedInSuccess);
-        history.push('/companies');
-      } catch (error){
-        await Promise.reject(error);
-      }
+      console.log(userToAdd);
+      // await addUser(userToAdd);
+      // alert(JSON.stringify(userToAdd, null, 2));
     },
   });
 
@@ -86,6 +68,33 @@ const Login:FC = () => {
             Sign up
           </Typography>
           <form onSubmit={formik.handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  id="firstName"
+                  name="firstName"
+                  label="First Name"
+                  value={formik.values.firstName}
+                  onChange={formik.handleChange}
+                  error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                  helperText={formik.touched.firstName && formik.errors.firstName}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+
+                <TextField
+                  fullWidth
+                  id="lastName"
+                  name="lastName"
+                  label="Last Name"
+                  value={formik.values.lastName}
+                  onChange={formik.handleChange}
+                  error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                  helperText={formik.touched.lastName && formik.errors.lastName}
+                />
+              </Grid>
+            </Grid>
             <TextField
               fullWidth
               id="email"
@@ -119,9 +128,9 @@ const Login:FC = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link
-                  href="/auth/register"
+                  href="/auth/login/callback"
                 >
-                  Do you want to create an account? Sign In
+                  Already have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>
@@ -132,6 +141,6 @@ const Login:FC = () => {
   );
 };
 
-// ReactDOM.render(<Login />, document.getElementById('root'));
+ReactDOM.render(<Register />, document.getElementById('root'));
 
-export default Login;
+export default Register;

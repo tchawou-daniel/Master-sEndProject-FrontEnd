@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-import { User } from 'types/users';
+import { User, UserRole } from 'types/users';
 
 import { selectCurrentUser } from 'redux/users/selectors';
 
@@ -11,6 +11,15 @@ export interface UseCurrentUserHookInterface {
 // Use this interface only when you're sure User is truthy.
 export interface UseDefinedCurrentUserHookInterface extends UseCurrentUserHookInterface {
   user: User;
+}
+export interface UpdateUserRequest {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  email?: string;
+  language: string;
+  role?: UserRole;
+  isDeactivated?: boolean;
 }
 
 export default () => ({

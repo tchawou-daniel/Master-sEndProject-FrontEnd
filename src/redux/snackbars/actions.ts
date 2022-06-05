@@ -4,7 +4,9 @@ import { ReduxAction } from 'types/redux';
 
 import { ACTIONS, SnackbarDefinition } from './constants';
 
-export const addSnackbar: ActionCreator<ReduxAction> = (snackbar: SnackbarDefinition) => ({
+export const addSnackbar: ActionCreator<ReduxAction> = (
+  snackbar: SnackbarDefinition,
+) => ({
   type: ACTIONS.ADD,
   payload: { snackbar },
 });

@@ -1,17 +1,19 @@
-import React, {
-  ComponentType, FC, useEffect,
-} from 'react';
+import { dispatch } from 'd3';
+import React, { ComponentType, FC, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-import { User } from 'types/users';
-
 import { isUserHaveCompany } from 'services/users/users.service';
+
+import { fetchCurrentUser } from '../../redux/users/actions';
+import { User } from '../../types/users';
+
+import useCurrentUser from './useCurrentUser';
 
 interface SpecialRouteProps {
   condition: boolean;
   component: ComponentType<any>;
   path: string | string[];
-  title?: string ;
+  title?: string;
 }
 
 export const SpecialRoute: FC<SpecialRouteProps> = ({
@@ -22,9 +24,9 @@ export const SpecialRoute: FC<SpecialRouteProps> = ({
 }) => {
   useEffect(() => {
     if (title) {
-      document.title = `${title} | Amalia`;
+      document.title = `${title} | Empreintt`;
     } else {
-      document.title = 'Amalia';
+      document.title = 'Empreintt';
     }
   }, [title]);
 
@@ -42,7 +44,7 @@ export const SpecialRoute: FC<SpecialRouteProps> = ({
 };
 
 interface UserConditionedRouteProps {
-  user: User;
+  currentUser: User;
   path: string | string[];
   component: ComponentType<any>;
   condition?: boolean;
@@ -50,13 +52,36 @@ interface UserConditionedRouteProps {
 }
 
 export const ProtectedRoute: FC<UserConditionedRouteProps> = ({
-  user, path, component, condition, title,
-}) => (
-  <SpecialRoute path={path} component={component} condition={!user || (condition || false)} title={title} />
-);
-
+  currentUser,
+  path,
+  component,
+  condition,
+  title,
+}) => {
+  const { user } = useCurrentUser();
+  return (
+    <SpecialRoute
+      path={path}
+      component={component}
+      condition={!user || condition || false}
+      title={title}
+    />
+  );
+};
 export const CompanyRoute: FC<UserConditionedRouteProps> = ({
-  user, path, component, condition, title,
-}) => (
-  <SpecialRoute path={path} component={component} condition={!isUserHaveCompany(user) || (condition || false)} title={title} />
-);
+  currentUser,
+  path,
+  component,
+  condition,
+  title,
+}) => {
+  const { user } = useCurrentUser();
+  return (
+    <SpecialRoute
+      path={path}
+      component={component}
+      condition={!isUserHaveCompany(user) || condition || false}
+      title={title}
+    />
+  );
+};

@@ -9,10 +9,7 @@ export const selectCurrentUser = (state: RootState): User => state.users.current
 
 export const selectUsersMap = (state: RootState): UsersMap => state.users.map;
 
-export const selectUsersList = createSelector(
-  [selectUsersMap],
-  map => sortUsers(Object.values(map)),
-);
+export const selectUsersList = createSelector([selectUsersMap], map => sortUsers(Object.values(map)));
 
 export const selectActiveUsers = createSelector(
   [selectUsersList],

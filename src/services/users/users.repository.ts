@@ -1,6 +1,4 @@
-import {
-  BulkSyncUsersRequest, SyncUserRequest, UpdateUserRequest, UserSettings,
-} from '@amal-ia/lib-types';
+import { useHistory } from 'react-router-dom';
 
 import {
   Employee, User,
@@ -8,18 +6,23 @@ import {
 
 import http from 'services/http';
 
+import { UpdateUserRequest } from '../../react/common/useCurrentUser';
+
 export const getEmployees = async (): Promise<User[]> => {
   const { data } = await http.get('/users');
   return data;
 };
 
-export const getCurrentUser = async (): Promise<User> => {
-  const { data } = await http.get<User>('/users/me');
+export const getCurrentUser = async (email:string): Promise<User> => {
+  const { data } = await http.get<User>(`/users/me/${email}`);
   return data;
 };
 
 export const logout = async (): Promise<void> => {
   await http.patch('/users/logout');
+  // remove from repository
+  // window.localStorage.clear();
+  // history.push('/login');
 };
 
 export const uploadAvatar = async (avatar: string): Promise<User> => {
@@ -32,10 +35,10 @@ export const updateUser = async (user: UpdateUserRequest): Promise<User> => {
   return data;
 };
 
-export const updateSettings = async (settings: UserSettings): Promise<User> => {
-  const { data } = await http.patch('/users/settings', settings);
-  return data;
-};
+// export const updateSettings = async (settings: UserSettings): Promise<User> => {
+//   const { data } = await http.patch('/users/settings', settings);
+//   return data;
+// };
 
 export const fetchUsersByIds = async (userIds: string[]): Promise<User[]> => {
   const { data } = await http.get<User[]>(`/users/?${userIds.map(id => `ids=${id}`).join('&')}`);
@@ -47,34 +50,4 @@ export const fetchActiveUsers = async () => {
   return data;
 };
 
-export class UsersService {
-  /*
-   * @deprecated
-   * Use fetchActiveUsers instead.
-   * TODO: It's still used in plan assignments for now because of some ugly code, to refactor.
-   */
-  static async getActiveEmployees(): Promise<Employee[]> {
-    const activeUsers = await http.get<User[]>('/users/?active=true');
-
-    return activeUsers.data.map((user, index) => ({
-      ...user,
-      assigned: false,
-      index,
-      userName: `${user.firstName} ${user.lastName}`,
-    }));
-  }
-}
-
-/**
- * @param users
- */
-export async function bulkSyncUsers(users: SyncUserRequest[]) {
-  return http.post('/users/registrations', { users } as BulkSyncUsersRequest);
-}
-
-/**
- * @param users
- */
-export async function sendInvitations(users: any) {
-  return http.post('/users/invitations', { users });
-}
+export {};

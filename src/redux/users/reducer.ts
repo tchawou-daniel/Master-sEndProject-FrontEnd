@@ -2,9 +2,10 @@ import { keyBy } from 'lodash';
 import { combineReducers } from 'redux';
 
 import { ReduxAction } from 'types/redux';
-import { User } from 'types/users';
 
 import { ACTIONS } from 'redux/users/constants';
+
+import { User } from '../../types/users';
 
 export default combineReducers({
   isLoading: (state: number = 0, action: ReduxAction) => {
@@ -43,24 +44,24 @@ export default combineReducers({
         return state;
     }
   },
-  allUsersLoaded: (state: boolean = false, action: ReduxAction) => {
-    switch (action.type) {
-      case ACTIONS.SET_USERS:
-        return action.payload.allUsers || state;
-      case ACTIONS.FLUSH_USERS:
-        return false;
-      default:
-        return state;
-    }
-  },
-  allActiveUsersLoaded: (state: boolean = false, action: ReduxAction) => {
-    switch (action.type) {
-      case ACTIONS.SET_USERS:
-        return action.payload.activeUsers || state;
-      case ACTIONS.FLUSH_USERS:
-        return false;
-      default:
-        return state;
-    }
-  },
+  // allUsersLoaded: (action: ReduxAction, state: boolean = false) => {
+  //   switch (action.type) {
+  //     case ACTIONS.SET_USERS:
+  //       return action.payload.allUsers || state;
+  //     case ACTIONS.FLUSH_USERS:
+  //       return false;
+  //     default:
+  //       return state;
+  //   }
+  // },
+  // allActiveUsersLoaded: (action: ReduxAction, state: boolean = false) => {
+  //   switch (action.type) {
+  //     case ACTIONS.SET_USERS:
+  //       return action.payload.activeUsers || state;
+  //     case ACTIONS.FLUSH_USERS:
+  //       return false;
+  //     default:
+  //       return state;
+  //   }
+  // },
 });

@@ -1,10 +1,13 @@
 export type User = {
   id: string;
+  firstName: string;
+  lastName: string;
+  password: string;
   email: string;
-  firstName: string | null;
+  role: UserRole;
   language: string;
-  lastName: string | null;
   pictureURL: string | null;
+  clearedAt: Date;
 };
 
 export interface Employee extends User {
@@ -17,3 +20,12 @@ export interface Employee extends User {
 }
 
 export type UsersMap = Record<string, User>;
+
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  TEMPORARY_WORKER = 'TEMPORARY_WORKER',
+  PERMANENT_WORKER = 'PERMANENT_WORKER',
+  EMPLOYMENT_AGENCY = 'EMPLOYMENT_AGENCY',
+  PARTNER_COMPANY_EMPLOYEE = 'PARTNER_COMPANY_EMPLOYEE',
+  PARTNER_COMPANY_EMPLOYEE_ADMIN = 'PARTNER_COMPANY_EMPLOYEE_ADMIN',
+}
