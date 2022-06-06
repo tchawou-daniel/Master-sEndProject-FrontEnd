@@ -6,11 +6,13 @@ import thunk from 'redux-thunk';
 
 import { ReduxAction } from '../types/redux';
 
+import companiesReducer from './companies/reducer';
 import { errorHandler } from './middlewares';
 import usersReducer from './users/reducer';
 
 const rootReducer = combineReducers({
   users: usersReducer,
+  companies: companiesReducer,
 });
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

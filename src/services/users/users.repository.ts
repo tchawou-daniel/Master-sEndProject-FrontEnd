@@ -1,7 +1,5 @@
-import { useHistory } from 'react-router-dom';
-
 import {
-  Employee, User,
+  User,
 } from 'types/users';
 
 import http from 'services/http';
@@ -20,9 +18,6 @@ export const getCurrentUser = async (email:string): Promise<User> => {
 
 export const logout = async (): Promise<void> => {
   await http.patch('/users/logout');
-  // remove from repository
-  // window.localStorage.clear();
-  // history.push('/login');
 };
 
 export const uploadAvatar = async (avatar: string): Promise<User> => {

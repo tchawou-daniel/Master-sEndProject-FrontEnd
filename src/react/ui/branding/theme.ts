@@ -201,8 +201,8 @@ export const empreinttThemeInstance = {
 };
 
 export type EmpreinttThemeType = Omit<
-  Theme,
-  'palette' | 'typography' | 'shape' | 'shadows'
+Theme,
+'palette' | 'typography' | 'shape' | 'shadows'
 > &
   typeof empreinttThemeInstance;
 

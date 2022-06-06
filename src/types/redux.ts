@@ -10,6 +10,7 @@ export interface ReduxAction extends Action {
 
 export interface RootState extends DefaultRootState {
   users: any;
+  companies: any;
 }
 
 export type ThunkResult<R> = ThunkAction<R, RootState, unknown, ReduxAction>;

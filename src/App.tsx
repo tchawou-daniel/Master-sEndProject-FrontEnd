@@ -39,7 +39,7 @@ function App() {
       <Route path="/auth/login/callback" component={Login} />
       <Route path="/auth/register/callback" component={Register} />
 
-      {/* <Route path="/companies" component={Companies} /> */}
+      {/* <Route path="/companies" component={companies} /> */}
 
       {/*       {(!user) ? ( */}
       {/*   <> */}
@@ -50,7 +50,7 @@ function App() {
       {/* ) : null} */}
       {/* {(!user) ? ( <EmpreinttAppBar />} */}
 
-      <ProtectedRoute path="/companies" currentUser={user} component={Companies} />
+      <ProtectedRoute path="/companies" user={user} component={Companies} />
       {/* ADMIN & EMPLOYMENT_AGENCY */}
       {/* <ProtectedRoute path="/admin/employments" user={user} component={} /> */}
       {/* <ProtectedRoute path="/admin/employments/:employmentId" user={user} component={} /> */}

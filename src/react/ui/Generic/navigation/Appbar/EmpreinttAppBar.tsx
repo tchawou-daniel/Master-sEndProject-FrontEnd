@@ -5,11 +5,17 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import {
+  Person as PersonIcon,
+  ExitToApp as ExitToAppIcon,
+
+} from '@material-ui/icons';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import clsx from 'clsx';
-import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
+import React, { FC, useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
+import { logout } from '../../../../../services/users/users.repository';
 import { User, UserRole } from '../../../../../types/users';
 import { empreinttTheme } from '../../../theme';
 
@@ -45,6 +51,8 @@ interface EmpreinttAppBarProps {
 const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
   user,
 }) => {
+  const history = useHistory();
+
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -53,13 +61,26 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
+
+  const handleProfile = useCallback(() => {
+    history.push('/profile');
+
+    handleClose();
+  }, [handleClose, history]);
+
+  const handleLogout = useCallback(async () => {
+    await logout();
+    localStorage.removeItem('MY_USER_EMAIL');
+    localStorage.removeItem('MY_USER_TOKEN_INFO');
+    handleClose();
+    history.push('/');
+  }, [handleClose, history]);
 
   // eslint-disable-next-line consistent-return
   const menu = (currentUser: User | undefined) => {
-    console.log(user);
     switch (currentUser?.role) {
       case UserRole.ADMIN:
         return (
@@ -88,8 +109,14 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleProfile}>
+                <PersonIcon />
+                Profile
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <ExitToAppIcon />
+                Log out
+              </MenuItem>
             </Menu>
           </div>
         );

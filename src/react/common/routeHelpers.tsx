@@ -4,10 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 import { isUserHaveCompany } from 'services/users/users.service';
 
-import { fetchCurrentUser } from '../../redux/users/actions';
 import { User } from '../../types/users';
-
-import useCurrentUser from './useCurrentUser';
 
 interface SpecialRouteProps {
   condition: boolean;
@@ -44,7 +41,7 @@ export const SpecialRoute: FC<SpecialRouteProps> = ({
 };
 
 interface UserConditionedRouteProps {
-  currentUser: User;
+  user: User;
   path: string | string[];
   component: ComponentType<any>;
   condition?: boolean;
@@ -52,36 +49,31 @@ interface UserConditionedRouteProps {
 }
 
 export const ProtectedRoute: FC<UserConditionedRouteProps> = ({
-  currentUser,
+  user,
   path,
   component,
   condition,
   title,
-}) => {
-  const { user } = useCurrentUser();
-  return (
-    <SpecialRoute
-      path={path}
-      component={component}
-      condition={!user || condition || false}
-      title={title}
-    />
-  );
-};
+}) => (
+  <SpecialRoute
+    path={path}
+    component={component}
+    condition={!user || condition || false}
+    title={title}
+  />
+);
+
 export const CompanyRoute: FC<UserConditionedRouteProps> = ({
-  currentUser,
+  user,
   path,
   component,
   condition,
   title,
-}) => {
-  const { user } = useCurrentUser();
-  return (
-    <SpecialRoute
-      path={path}
-      component={component}
-      condition={!isUserHaveCompany(user) || condition || false}
-      title={title}
-    />
-  );
-};
+}) => (
+  <SpecialRoute
+    path={path}
+    component={component}
+    condition={!isUserHaveCompany(user) || condition || false}
+    title={title}
+  />
+);
