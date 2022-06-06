@@ -5,7 +5,7 @@ import { ReduxAction } from 'types/redux';
 import { ACTIONS } from 'redux/companies/constants';
 import { ACTIONS as USER_ACTIONS } from 'redux/users/constants';
 
-import { Company } from '../../types/users';
+import { Company } from '../../types/Company';
 
 export default combineReducers({
   isLoading: (state: number = 0, action: ReduxAction) => {

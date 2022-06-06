@@ -6,7 +6,7 @@ import { ACTIONS } from 'redux/companies/constants';
 import { addSnackbar } from 'redux/snackbars/actions';
 
 import * as CompaniesRepository from '../../services/companies/companies.repository';
-import { Company } from '../../types/users';
+import { Company } from '../../types/Company';
 
 const companyStart: ActionCreator<ReduxAction> = () => ({
   type: ACTIONS.START,

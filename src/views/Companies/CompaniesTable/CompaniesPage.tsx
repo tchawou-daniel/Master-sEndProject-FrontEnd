@@ -1,12 +1,15 @@
 import { Box, Paper } from '@material-ui/core';
 import React, { FC, memo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import useAsyncEffect from 'use-async-effect';
 
+import { fetchCompany, patchCompany } from 'redux/companies/actions';
 import { useThunkDispatch } from 'redux/store';
 
 import { DataGridPropsOptions } from '../../../react/ui/tables/DataGrid/Datagrid.props';
 import { DataGridPluginPosition } from '../../../react/ui/tables/DataGrid/DataGridComponents/DataGridPlugin';
 import { SmallerGroupCellComponent, SmallerHeaderCellComponent } from '../../../react/ui/tables/DataGrid/DataGridComponents/NativeComponents';
+import { selectCompany } from '../../../redux/companies/selectors';
 
 import CompaniesTable from './CompaniesTable';
 
@@ -50,13 +53,13 @@ const DATAGRID_OPTIONS: DataGridPropsOptions = {
 const CompaniesPage: FC = () => {
   const dispatch = useThunkDispatch();
 
-  useEffect(() => {
-  // from redux/companies/actions/companies.actions
-    dispatch(fetchAllCompanies());
+  useAsyncEffect(async () => {
+    await dispatch(fetchCompany());
   }, [dispatch]);
 
   // use selector in order to retrieve some companies with redux
-  const companies = useSelector(selectSaCompanies);
+  const companies = useSelector(selectCompany);
+  console.log(companies);
 
   return (
     <Paper>

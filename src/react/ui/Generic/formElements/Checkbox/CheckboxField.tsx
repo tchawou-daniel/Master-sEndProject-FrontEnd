@@ -5,8 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { uniqueId } from 'lodash';
 import React, { memo, FC, useMemo } from 'react';
 
-import formikToMui from 'react/ui/generic/formElements/formikToMui';
-import { FormElementContainer, InputLabel } from 'react/ui/generic/formElements/inputs/Input/Input';
+import formikToMui from 'react/ui/Generic/formElements/formikToMui';
+import { FormElementContainer, InputLabel } from 'react/ui/Generic/formElements/inputs/Input/Input';
 
 import Checkbox from './Checkbox';
 

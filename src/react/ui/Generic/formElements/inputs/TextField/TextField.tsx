@@ -1,8 +1,8 @@
 import { FormHelperText, InputBaseComponentProps } from '@material-ui/core';
 import React, { memo, FC } from 'react';
 
-import formikToMui from 'react/ui/generic/formElements/formikToMui';
-import InfoWithTooltip from 'react/ui/generic/InfoWithTooltip';
+import formikToMui from 'react/ui/Generic/formElements/formikToMui';
+import InfoWithTooltip from 'react/ui/Generic/InfoWithTooltip';
 
 import { InputLabel, Input, FormElementContainer } from '../Input/Input';
 

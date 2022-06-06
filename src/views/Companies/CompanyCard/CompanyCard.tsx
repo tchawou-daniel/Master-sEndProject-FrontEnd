@@ -9,13 +9,12 @@ import React, {
 } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { CompanyAssignmentWithUser } from 'types/CompanyAssignments';
-
 import { empreinttTheme, EmpreinttThemeType } from 'react/ui/branding/theme';
 import { H2 } from 'react/ui/Generic/typography';
-import { PlanAvatar } from 'react/views/Management/Companies/Overview/WorkerAvatar';
 
 import { Company } from '../../../types/Company';
+import { CompanyAssignmentWithUser } from '../../../types/companyAssignments';
+import { CompanyAvatar } from '../CompanyAvatar';
 
 const useStyles = makeStyles((theme: EmpreinttThemeType) => ({
   root: {
@@ -67,21 +66,21 @@ const useStyles = makeStyles((theme: EmpreinttThemeType) => ({
 
 const COMPANY_ASSIGNMENTS_LIMIT = 7;
 
-interface PlanCardProps {
-  companies: Company,
+interface CompanyCardProps {
+  company: Company,
   assignments: CompanyAssignmentWithUser[],
 }
 
-const CompanyCard: FC<PlanCardProps> = ({
-  companies,
+const CompanyCard: FC<CompanyCardProps> = ({
+  company,
   assignments,
 }) => {
   const classes = useStyles();
   const history = useHistory();
 
   const openAssignments = useCallback(() => {
-    history.push(`/plans/${plan.id}/assignment?from=plantab`);
-  }, [history, plan]);
+    history.push(`/companies/${company.id}/assignment?from=plantab`);
+  }, [history, company]);
 
   return (
     <Card elevation={0} className={clsx('plan-card', classes.root)}>
@@ -93,11 +92,11 @@ const CompanyCard: FC<PlanCardProps> = ({
           paddingX={empreinttTheme.spacing(0.5)}
           marginY={empreinttTheme.spacing(0.25)}
         >
-          <H2 color="secondary">{plan.name}</H2>
+          <H2 color="secondary">{company.name}</H2>
         </Box>
         <Box display="flex" justifyContent="center" flexWrap="wrap">
           {assignments.map(a => (
-            <PlanAvatar key={a.user.id} user={a.user} />
+            <CompanyAvatar key={a.user.id} user={a.user} />
           ))}
 
         </Box>

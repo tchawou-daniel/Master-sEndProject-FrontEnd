@@ -13,23 +13,16 @@ interface CompaniesTableProps {
   datagridOptions: any,
 }
 
-const COLUMN_EXTENSIONS = [
-  { columnName: 'company_name', width: 180, wordWrapEnabled: true },
-  { columnName: 'planTemplateGeneratedDate', width: 180, wordWrapEnabled: true },
-  { columnName: 'time', width: 180, wordWrapEnabled: true },
-  { columnName: 'recursionLevel', width: 180, wordWrapEnabled: true },
-];
-
 const CompaniesTable: FC<CompaniesTableProps> = ({
   rows,
   columns,
   datagridOptions,
 }) => (
   <DataGrid
-    id="plansTable"
+    id="companiesTable"
     rows={rows}
     columns={columns}
-    tableProps={{ cellComponent: Cell, columnExtensions: COLUMN_EXTENSIONS }}
+    tableProps={{ cellComponent: Cell }}
     options={datagridOptions}
   />
 );

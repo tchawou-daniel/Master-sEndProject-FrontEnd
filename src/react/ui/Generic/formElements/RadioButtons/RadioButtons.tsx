@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { memo, FC, ReactNode } from 'react';
 
 import { EmpreinttThemeType } from 'react/ui/branding/theme';
-import Button, { IconButton } from 'react/ui/generic/Button/Button';
+import Button, { IconButton } from 'react/ui/Generic/Button/Button';
 
 import formikToMui from '../formikToMui';
 

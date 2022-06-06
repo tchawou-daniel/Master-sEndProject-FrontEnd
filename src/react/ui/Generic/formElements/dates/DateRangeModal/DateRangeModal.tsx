@@ -14,17 +14,16 @@ import moment, { Moment } from 'moment';
 import React, {
   FC, memo, useCallback, useEffect, useState,
 } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-
-import { DateRange } from 'types/__common';
 
 import { COMMON_MESSAGES } from 'react/common/messages';
 import useSnackbars from 'react/common/useSnackbars';
 import { EmpreinttThemeType } from 'react/ui/branding/theme';
-import Button, { IconButton } from 'react/ui/generic/Button/Button';
-import DialogTitleWithCloseButton from 'react/ui/generic/DialogTitleWithCloseButton';
-import { InputLabel } from 'react/ui/generic/formElements/inputs/Input/Input';
-import { H2 } from 'react/ui/generic/typography';
+import Button, { IconButton } from 'react/ui/Generic/Button/Button';
+import DialogTitleWithCloseButton from 'react/ui/Generic/DialogTitleWithCloseButton';
+import { InputLabel } from 'react/ui/Generic/formElements/inputs/Input/Input';
+import { H2 } from 'react/ui/Generic/typography';
+
+import { DateRange } from '../../../../../../types/__common';
 
 interface DateRangeMoment {
   startDate: Moment | null;
@@ -97,7 +96,6 @@ const DateRangeModal: FC<DateRangeModalProps> = ({
   disabled,
 }) => {
   const classes = useStyles();
-  const { formatMessage } = useIntl();
   const { snackError } = useSnackbars();
 
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
@@ -193,7 +191,7 @@ const DateRangeModal: FC<DateRangeModalProps> = ({
           : (
             <IconButton
               variant="iconOnly"
-              tooltipTitle={formatMessage({ defaultMessage: 'Set a date range' })}
+              tooltipTitle="Set a date range"
               {...restCommonButtonProps}
             >
               <DateRangeIcon />
@@ -212,7 +210,8 @@ const DateRangeModal: FC<DateRangeModalProps> = ({
           <Box display="flex" justifyContent="space-evenly">
             <Box display="flex" justifyContent="center" flexDirection="column" alignItems="center" aria-label="Start date">
               <H2 color="secondary">
-                <FormattedMessage defaultMessage="Start" description="Date Range Modal" />
+                {/* <FormattedMessage defaultMessage="Start" description="Date Range Modal" /> */}
+                Start
               </H2>
               <DatePicker
                 ToolbarComponent={ToolbarReplacement}
@@ -221,12 +220,14 @@ const DateRangeModal: FC<DateRangeModalProps> = ({
                 onChange={onChangeStart}
               />
               <Button color="default" size="small" onClick={() => onChangeStart(null)}>
-                <FormattedMessage defaultMessage="Reset" description="Date Range Modal" />
+                {/* <FormattedMessage defaultMessage="Reset" description="Date Range Modal" /> */}
+                Reset
               </Button>
             </Box>
             <Box display="flex" justifyContent="center" flexDirection="column" alignItems="center" aria-label="End date">
               <H2 color="secondary">
-                <FormattedMessage defaultMessage="End" description="Date Range Modal" />
+                {/* <FormattedMessage defaultMessage="End" description="Date Range Modal" /> */}
+                End
               </H2>
               <DatePicker
                 ToolbarComponent={ToolbarReplacement}
@@ -235,7 +236,8 @@ const DateRangeModal: FC<DateRangeModalProps> = ({
                 onChange={onChangeEnd}
               />
               <Button color="default" size="small" onClick={() => onChangeEnd(null)}>
-                <FormattedMessage defaultMessage="Reset" description="Date Range Modal" />
+                {/* <FormattedMessage defaultMessage="Reset" description="Date Range Modal" /> */}
+                Reset
               </Button>
             </Box>
           </Box>
@@ -243,10 +245,10 @@ const DateRangeModal: FC<DateRangeModalProps> = ({
         <Divider className={classes.divider} />
         <DialogActions>
           <Button color="default" variant="outlined" onClick={onDismiss}>
-            <FormattedMessage {...COMMON_MESSAGES.CANCEL} />
+            {COMMON_MESSAGES.CANCEL}
           </Button>
           <Button color="primary" className={classes.submitButton} onClick={onApply}>
-            <FormattedMessage {...COMMON_MESSAGES.SAVE} />
+            {COMMON_MESSAGES.SAVE}
           </Button>
         </DialogActions>
       </Dialog>

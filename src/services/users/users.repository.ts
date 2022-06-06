@@ -16,10 +16,6 @@ export const getCurrentUser = async (email:string): Promise<User> => {
   return data;
 };
 
-export const logout = async (): Promise<void> => {
-  await http.patch('/users/logout');
-};
-
 export const uploadAvatar = async (avatar: string): Promise<User> => {
   const { data } = await http.put('/users/upload', { avatar });
   return data;

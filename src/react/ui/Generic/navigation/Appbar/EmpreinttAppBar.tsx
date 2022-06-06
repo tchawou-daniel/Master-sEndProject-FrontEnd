@@ -15,7 +15,9 @@ import clsx from 'clsx';
 import React, { FC, useCallback } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import { logout } from '../../../../../services/users/users.repository';
+import { useThunkDispatch } from 'redux/store';
+
+import { logoutCurrentUser } from '../../../../../redux/users/actions';
 import { User, UserRole } from '../../../../../types/users';
 import { empreinttTheme } from '../../../theme';
 
@@ -51,6 +53,8 @@ interface EmpreinttAppBarProps {
 const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
   user,
 }) => {
+  const dispatch = useThunkDispatch();
+
   const history = useHistory();
 
   const classes = useStyles();
@@ -72,19 +76,22 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
   }, [handleClose, history]);
 
   const handleLogout = useCallback(async () => {
-    await logout();
     localStorage.removeItem('MY_USER_EMAIL');
     localStorage.removeItem('MY_USER_TOKEN_INFO');
-    handleClose();
-    history.push('/');
-  }, [handleClose, history]);
+    await dispatch(logoutCurrentUser());
+    // handleClose();
+  }, [dispatch]);
 
   // eslint-disable-next-line consistent-return
   const menu = (currentUser: User | undefined) => {
+    console.log(currentUser);
     switch (currentUser?.role) {
       case UserRole.ADMIN:
         return (
           <div>
+            <Link className={clsx(classes.link, classes.rigthMargin)} to="/companies">
+              Companies
+            </Link>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"

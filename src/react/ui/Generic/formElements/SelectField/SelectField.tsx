@@ -17,11 +17,11 @@ import React, {
   memo, FC, ReactNode, useCallback, useMemo, ReactElement, useState,
 } from 'react';
 
-import { eventStopPropagation, eventStopPropagationAndPreventDefault } from 'react/common/eventHelpers';
 import { EmpreinttThemeType } from 'react/ui/branding/theme';
-import SearchInput from 'react/ui/generic/formElements/inputs/SearchInput/SearchInput';
+import SearchInput from 'react/ui/Generic/formElements/inputs/SearchInput/SearchInput';
 
 import { StringUtils } from '../../../../../types/StringUtils';
+import { eventStopPropagation, eventStopPropagationAndPreventDefault } from '../../../../common/eventHelpers';
 import { IconButton } from '../../Button/Button';
 import InfoWithTooltip from '../../InfoWithTooltip';
 import Checkbox from '../Checkbox/Checkbox';

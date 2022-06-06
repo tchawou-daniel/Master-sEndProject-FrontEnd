@@ -65,6 +65,14 @@ export const fetchCurrentUser = (): ThunkResult<Promise<ReduxAction>> => async (
   }
 };
 
+export const logoutCurrentUser = (): ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
+  try {
+    return dispatch(setCurrentUser(null));
+  } catch (error) {
+    return dispatch(usersError(error));
+  }
+};
+
 //
 // export const updateCurrentUser =
 //   (user: UpdateUserRequest): ThunkResult<Promise<ReduxAction>> =>

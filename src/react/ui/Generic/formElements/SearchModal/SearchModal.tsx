@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import { EmpreinttThemeType } from 'react/ui/branding/theme';
-import { Spinner } from 'react/ui/generic/loaders/Spinner/Spinner';
+import { Spinner } from 'react/ui/Generic/loaders/Spinner/Spinner';
 
 interface SearchModalProps {
   isLoading: boolean;

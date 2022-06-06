@@ -17,6 +17,7 @@ import { fetchCurrentUser } from './redux/users/actions';
 import { ACTIONS } from './redux/users/constants';
 import httpService from './services/http';
 import { UserRole } from './types/users';
+import CompanyRoutes from './views/Companies/company.routes';
 
 // axios.defaults.baseURL = 'http://localhost/5000';
 
@@ -50,7 +51,7 @@ function App() {
       {/* ) : null} */}
       {/* {(!user) ? ( <EmpreinttAppBar />} */}
 
-      <ProtectedRoute path="/companies" user={user} component={Companies} />
+      <ProtectedRoute path="/companies" user={user} component={CompanyRoutes} />
       {/* ADMIN & EMPLOYMENT_AGENCY */}
       {/* <ProtectedRoute path="/admin/employments" user={user} component={} /> */}
       {/* <ProtectedRoute path="/admin/employments/:employmentId" user={user} component={} /> */}

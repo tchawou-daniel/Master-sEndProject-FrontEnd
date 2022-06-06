@@ -1,12 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
 
-import { OptionType } from 'types/__common';
 import { User } from 'types/users';
 
-import Autocomplete from 'react/ui/generic/formElements/AutoComplete/Autocomplete';
-import { Input } from 'react/ui/generic/formElements/inputs/Input/Input';
+import Autocomplete from 'react/ui/Generic/formElements/AutoComplete/Autocomplete';
+import { Input } from 'react/ui/Generic/formElements/inputs/Input/Input';
 
 import { formatUserFullName } from 'services/users/users.service';
+
+import { OptionType } from '../../../../../types/__common';
 
 interface AutoCompleteUsersProps {
   users: User[];

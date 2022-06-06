@@ -293,7 +293,7 @@ const DataGrid: FC<DataGridProps> = ({
 
   // Customized Paging panel
   const customizedPagingPanel = useMemo(() => {
-    const pageLength = (options?.pages?.customPagingTotalItems || rows.length) / (options?.pages?.pageSize || pageSize);
+    const pageLength = (options?.pages?.customPagingTotalItems || rows?.length || 0) / (options?.pages?.pageSize || pageSize);
     return (
       <PagingPanel
         pageSizes={pageSizes}
@@ -328,21 +328,21 @@ const DataGrid: FC<DataGridProps> = ({
   const renderPlugin = useCallback(([key, node]) => (
     <Plugin name={key} key={key}>
       <Template name="toolbarContent">
-        {node}
+        {node.children}
         <TemplatePlaceholder />
       </Template>
     </Plugin>
   ), []);
 
   useEffect(() => {
-    if (currentPage > (rows.length / pageSize)) {
+    if (currentPage > (rows?.length / pageSize)) {
       setCurrentPage(0);
     }
   }, [rows, pageSize, currentPage]);
 
   return (
     <Grid
-      rows={rows}
+      rows={rows || []}
       // @ts-expect-error -- Problem of typing but datagrid actually accepts ReactElements.
       columns={columns}
       getCellValue={options?.getCellValue}

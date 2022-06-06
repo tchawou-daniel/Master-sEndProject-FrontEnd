@@ -5,9 +5,8 @@ import clsx from 'clsx';
 import React, {
   ChangeEvent, FC, MouseEventHandler, useCallback, useMemo, useState, KeyboardEventHandler, useRef, useEffect,
 } from 'react';
-import { useIntl } from 'react-intl';
 
-import { IconButton } from 'react/ui/generic/Button/Button';
+import { IconButton } from 'react/ui/Generic/Button/Button';
 
 import { Input } from '../Input/Input';
 
@@ -21,7 +20,7 @@ interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   onClick?: MouseEventHandler<HTMLInputElement>;
-  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   forceSearchVisible?: boolean;
   className?: string;
   showBorder?: boolean;
@@ -37,7 +36,6 @@ const SearchInput: FC<SearchInputProps> = ({
   showBorder = false,
 }) => {
   const classes = useStyles();
-  const { formatMessage } = useIntl();
 
   const [searchIsVisible, setSearchIsVisible] = useState<boolean>(!!forceSearchVisible);
   const inputRef: any = useRef();
@@ -86,7 +84,7 @@ const SearchInput: FC<SearchInputProps> = ({
       id="search-input"
       className={clsx(className, !showBorder ? classes.input : null)}
       value={value}
-      placeholder={formatMessage({ defaultMessage: 'Search' })}
+      placeholder="Search"
       onChange={onChangeProxy}
       startAdornment={<Search />}
       autoFocus={!forceSearchVisible}

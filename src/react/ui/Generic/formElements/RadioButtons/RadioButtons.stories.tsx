@@ -1,9 +1,10 @@
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React, { useState, useMemo } from 'react';
 
-import { useCustomIconStyles } from 'assets/images/customIcons/_common';
 import { ReactComponent as GridView } from 'assets/images/customIcons/mdi_view_grid.svg';
 import { ReactComponent as HeadlineView } from 'assets/images/customIcons/mdi_view_headline.svg';
+
+import { useCustomIconStyles } from '../../../../../images/customIcons/_common';
 
 import RadioButtons from './RadioButtons';
 

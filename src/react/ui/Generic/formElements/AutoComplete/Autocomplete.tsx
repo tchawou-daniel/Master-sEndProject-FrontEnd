@@ -2,7 +2,7 @@ import { Autocomplete, AutocompleteProps } from '@material-ui/lab';
 import { AutocompleteRenderInputParams } from '@material-ui/lab/Autocomplete';
 import React, { ReactNode } from 'react';
 
-import { FormElementContainer, InputLabel } from 'react/ui/generic/formElements/inputs/Input/Input';
+import { FormElementContainer, InputLabel } from 'react/ui/Generic/formElements/inputs/Input/Input';
 
 interface Option {
   value: string;

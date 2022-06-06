@@ -121,7 +121,7 @@ export const empreinttThemeInstance = {
   },
   typography: {
     fontSize: 14,
-    fontFamily: 'Nunito',
+    fontFamily: 'sans-serif',
     h1: {
       fontSize: '32px',
       lineHeight: '56px',
@@ -161,25 +161,25 @@ export const empreinttThemeInstance = {
       fontWeight: 'bold',
     },
     body1: {
-      fontFamily: 'Roboto',
+      fontFamily: 'sans-serif',
       fontSize: '16px',
       lineHeight: '23px',
       letterSpacing: '0.05em',
     },
     body2: {
-      fontFamily: 'Roboto',
+      fontFamily: 'sans-serif',
       fontSize: '12px',
       lineHeight: '150%',
       letterSpacing: '1.5px',
       fontWeight: 'normal',
     },
     caption: {
-      fontFamily: 'Roboto',
+      fontFamily: 'sans-serif',
       fontSize: '14px',
       lineHeight: '150%',
     },
     overline: {
-      fontFamily: 'Roboto',
+      fontFamily: 'sans-serif',
       fontSize: '10px',
       letterSpacing: '1.5px',
       fontWeight: 'normal',

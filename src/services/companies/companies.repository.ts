@@ -1,6 +1,6 @@
 import http from 'services/http';
 
-import { Company } from '../../types/users';
+import { Company } from '../../types/Company';
 
 export async function getCompany(): Promise<Company> {
   const { data } = await http.get('/companies');
