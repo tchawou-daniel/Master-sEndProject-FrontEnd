@@ -1,8 +1,6 @@
 import { Table } from '@devexpress/dx-react-grid-material-ui';
-import { Box } from '@material-ui/core';
-import moment from 'moment';
 import React, {
-  memo, ReactNode, useCallback, useMemo,
+  memo, ReactNode, useMemo,
 } from 'react';
 
 import { empreinttTheme } from '../../../react/ui/branding/theme';
@@ -16,35 +14,14 @@ const Cell = (cellProps: any) => {
   let content: ReactNode | string = '';
 
   switch (column.name) {
-    case 'name':
-      content = tableRow?.row?.name;
+    case 'firstName':
+      content = tableRow?.row?.firstName;
       break;
-    case 'street':
-      content = tableRow?.row?.admin;
+    case 'lastName':
+      content = tableRow?.row?.lastName;
       break;
-    case 'town':
-      content = tableRow?.row?.town;
-      break;
-    case 'zipCode':
-      content = tableRow?.row?.zipCode;
-      break;
-    case 'companySector':
-      content = tableRow?.row?.companySector;
-      break;
-    case 'companyStatus':
-      content = tableRow?.row?.companyStatus;
-      break;
-    case 'country':
-      content = tableRow?.row?.country;
-      break;
-    case 'description':
-      content = tableRow?.row?.description;
-      break;
-    case 'hiringStatus':
-      content = tableRow?.row?.hiringStatus;
-      break;
-    case 'editCompany':
-      content = 'qsdfsq';
+    case 'email':
+      content = tableRow?.row?.email;
       break;
     default:
       content = '';

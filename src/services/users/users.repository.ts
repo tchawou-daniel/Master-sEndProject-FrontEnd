@@ -6,7 +6,7 @@ import http from 'services/http';
 
 import { UpdateUserRequest } from '../../react/common/useCurrentUser';
 
-export const getEmployees = async (): Promise<User[]> => {
+export const getUsers = async (): Promise<User[]> => {
   const { data } = await http.get('/users');
   return data;
 };

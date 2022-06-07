@@ -94,6 +94,9 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
             <Link className={clsx(classes.link, classes.marginRight)} to="/agencyusers">
               Agency users
             </Link>
+            <Link className={clsx(classes.link, classes.marginRight)} to="/workers">
+              Workers
+            </Link>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"

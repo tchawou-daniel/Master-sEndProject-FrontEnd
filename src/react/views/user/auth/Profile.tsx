@@ -1,14 +1,12 @@
 import {
-  Box, Container, Grid, Link, ThemeProvider, Typography,
+  Box, Container, ThemeProvider, Typography,
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { useFormik } from 'formik';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { useHistory } from 'react-router-dom';
+import React, { memo } from 'react';
 import * as yup from 'yup';
 
 import useCurrentUser from 'react/common/useCurrentUser';
@@ -27,7 +25,6 @@ const validationSchema = yup.object({
     .string()
     .email('Enter a valid email')
     .required('Email is required'),
-  password: yup.string().min(8, 'Password should be of minimum 8 characters length').required('Password is required'),
 });
 
 const useStyles = makeStyles(theme => ({
@@ -36,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Register = () => {
+const Profile = () => {
   const [edit, setEdit] = React.useState(false);
   const classes = useStyles();
   // const history = useHistory();
@@ -52,16 +49,14 @@ const Register = () => {
     },
     validationSchema,
     onSubmit: async (userToAdd: any) => {
-      // console.log("le user to update ", {...user, ...userToAdd});
       const updatedUser = { ...userToAdd, id: user.id, lang: user.role };
       const data = await updateUser(updatedUser);
       if (data) {
-        console.log('the updated user ', data);
         await dispatch(setCurrentUser({ ...user, ...data }));
         setEdit(false);
       } else {
         alert('fail to update');
-        // setEdit(false)
+        setEdit(false);
       }
     },
   });
@@ -151,6 +146,6 @@ const Register = () => {
   );
 };
 
-// ReactDOM.render(<Register />, document.getElementById('root'));
+// ReactDOM.render(<Profile />, document.getElementById('root'));
 
-export default Register;
+export default memo(Profile);

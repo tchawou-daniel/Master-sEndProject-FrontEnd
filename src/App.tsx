@@ -15,6 +15,7 @@ import Login from './react/views/user/auth/Login';
 import Profile from './react/views/user/auth/Profile';
 import Register from './react/views/user/auth/Register';
 import CompanyRoutes from './views/Companies/company.routes';
+import WorkerRoutes from './views/Workers/worker.routes';
 
 // axios.defaults.baseURL = 'http://localhost/5000';
 
@@ -43,6 +44,7 @@ function App() {
 
       <ProtectedRoute path="/profile" user={user} component={Profile} />
       <ProtectedRoute path="/companies" user={user} component={CompanyRoutes} />
+      <ProtectedRoute path="/workers" user={user} component={WorkerRoutes} />
       {/* <ProtectedRoute path="/agencyusers" user={user} component={CompanyRoutes} /> */}
       {/* <ProtectedRoute path="/allworkers" user={user} component={CompanyRoutes} /> */}
       {/* ADMIN & EMPLOYMENT_AGENCY */}

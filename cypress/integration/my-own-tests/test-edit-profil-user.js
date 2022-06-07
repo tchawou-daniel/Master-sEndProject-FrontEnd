@@ -1,4 +1,4 @@
-describe('Create a new company', () => {
+describe('Edit the profil user', () => {
   beforeEach(() => {
     cy.viewport(1280, 720);
     cy.visit('http://localhost:3000/');
@@ -20,15 +20,17 @@ describe('Create a new company', () => {
     cy.get('[name="password"]').type('SuperSecretP4word', { force: true });
     cy.contains('Submit').click({ force: true });
 
-    cy.contains('Create a company').click({ force: true });
-    cy.get('[role="dialog"]').should('be.visible');
+    cy.get('[aria-controls="menu-appbar"]').click({ force: true });
+    cy.contains('Profile').click({ force: true });
 
-    cy.get('[name="name"]').type('the comapny name 2', { force: true });
-    cy.get('[name="street"]').type('company street 2', { force: true });
-    cy.get('[name="town"]').type('comapny town 2', { force: true });
-    cy.get('[name="zipCode"]').type('company zipCode3', { force: true });
-    cy.get('[name="country"]').type('comapny country3', { force: true });
-    cy.get('[name="description"]').eq(1).type('comapnydescription 3', { force: true });
+    cy.contains('Edit').click({ force: true });
+
+    cy.get('[name="firstName"]').clear();
+    cy.get('[name="firstName"]').type('jeremi', { force: true });
+    cy.get('[name="lastName"]').clear();
+    cy.get('[name="lastName"]').type('the new last name', { force: true });
+    cy.get('[name="email"]').clear();
+    cy.get('[name="email"]').type('jeremi@gmail.com', { force: true });
     cy.contains('Submit').click({ force: true });
   });
 });

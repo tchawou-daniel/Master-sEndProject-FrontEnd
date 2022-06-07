@@ -107,7 +107,7 @@ const Home = () => {
         <Grid container>
           <Grid item xs={12}>
             <Box className={classes.video} color="primary">
-              <ReactPlayer url="https://www.youtube.com/watch?v=Xoz31I1FuiY" width="100%" height="80vh" />
+              <ReactPlayer url="https://youtu.be/IeBCdLgho8s" width="100%" height="80vh" />
             </Box>
           </Grid>
         </Grid>
