@@ -16,12 +16,12 @@ import React, {
 } from 'react';
 
 import { EmpreinttThemeType } from 'react/ui/branding/theme';
-import Button, { IconButton } from 'react/ui/Generic/Button/Button';
-import DialogTitleWithCloseButton from 'react/ui/Generic/DialogTitleWithCloseButton';
 
 import { DateRange } from '../../../../../../types/__common';
 import { COMMON_MESSAGES } from '../../../../../common/messages';
 import useSnackbars from '../../../../../common/useSnackbars';
+import Button, { IconButton } from '../../../Button/Button';
+import DialogTitleWithCloseButton from '../../../DialogTitleWithCloseButton';
 import { H2 } from '../../../typography';
 import { InputLabel } from '../../inputs/Input/Input';
 

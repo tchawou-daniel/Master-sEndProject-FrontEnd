@@ -24,17 +24,11 @@ import {
   TableFixedColumns,
 } from '@devexpress/dx-react-grid-material-ui';
 import React, {
-  FC, useCallback, useEffect, useMemo, useState,
+  FC, useEffect, useMemo, useState,
 } from 'react';
 import store from 'store';
 
-import { ReactComponent as PinOffIcon } from 'assets/images/customIcons/mdi_pin-off.svg';
-import { ReactComponent as PinIcon } from 'assets/images/customIcons/mdi_pin.svg';
-
-import { DefaultActionIconButton } from '../../Generic/Button/Button';
-
 import { DataGridProps } from './Datagrid.props';
-import DataGridPlugins, { DataGridPluginDefinition, DataGridPluginPosition } from './DataGridComponents/DataGridPlugin';
 import {
   DatagridSearchInput,
   InitialWidthTableComponent,
@@ -133,8 +127,7 @@ const DataGrid: FC<DataGridProps> = ({
   }, [rows, pageSize, currentPage]);
 
   // FIXED COLUMNS
-  const [isFirstColumnPinned, setFirstColumnPinned] = useState<boolean>(!!options?.fixed?.pinnableFirstColumn);
-  const toggleFirstColumnPinned = useCallback(() => setFirstColumnPinned(p => !p), []);
+  const [isFirstColumnPinned] = useState<boolean>(!!options?.fixed?.pinnableFirstColumn);
 
   const fixedColumns = useMemo(
     () => ([

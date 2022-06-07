@@ -77,6 +77,7 @@ export const CompaniesFormAddModal: FC<CompaniesFormAddProps> = ({
           open={isOpen}
           onClose={onCancel}
           fullWidth
+          className="create-company-modal"
         >
           <Form autoComplete="off">
 

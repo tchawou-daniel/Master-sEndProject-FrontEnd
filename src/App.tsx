@@ -10,6 +10,7 @@ import useAsyncEffect from 'use-async-effect';
 import { ProtectedRoute } from './react/common/routeHelpers';
 import useCurrentUser from './react/common/useCurrentUser';
 import EmpreinttAppBar from './react/ui/Generic/navigation/Appbar/EmpreinttAppBar';
+import Home from './react/views/home/Home';
 import Login from './react/views/user/auth/Login';
 import Profile from './react/views/user/auth/Profile';
 import Register from './react/views/user/auth/Register';
@@ -36,9 +37,10 @@ function App() {
       {/*
       <Route path="/" exact component={Home} />
 */}
-
+      {!user && (<Route path="/" exact component={Home} />)}
       <Route path="/auth/login/callback" component={Login} />
       <Route path="/auth/register/callback" component={Register} />
+
       <ProtectedRoute path="/profile" user={user} component={Profile} />
       <ProtectedRoute path="/companies" user={user} component={CompanyRoutes} />
       {/* <ProtectedRoute path="/agencyusers" user={user} component={CompanyRoutes} /> */}

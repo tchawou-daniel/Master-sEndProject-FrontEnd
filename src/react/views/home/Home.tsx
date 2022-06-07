@@ -3,7 +3,7 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
+import React, { memo } from 'react';
 import {
   FaCheck, FaMailBulk, FaPhoneAlt, SiFacebook, SiGithub, SiLinkedin,
 } from 'react-icons/all';
@@ -305,4 +305,4 @@ const Home = () => {
 };
 // ReactDOM.render(<Home />, document.getElementById('root'));
 
-export default Home;
+export default memo(Home);

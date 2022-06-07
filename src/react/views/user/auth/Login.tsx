@@ -123,7 +123,7 @@ const Login:FC = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link
-                  href="/auth/register"
+                  href="/auth/register/callback"
                 >
                   Do you want to create an account? Sign In
                 </Link>

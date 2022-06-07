@@ -6,7 +6,8 @@ import React, {
 } from 'react';
 
 import { EmpreinttThemeType } from 'react/ui/branding/theme';
-import { IconButton } from 'react/ui/Generic/Button/Button';
+
+import { IconButton } from '../../../Button/Button';
 
 interface QuickEditProps {
   currentValue: string;

@@ -6,8 +6,7 @@ import React, {
   ChangeEvent, FC, MouseEventHandler, useCallback, useMemo, useState, KeyboardEventHandler, useRef, useEffect,
 } from 'react';
 
-import { IconButton } from 'react/ui/Generic/Button/Button';
-
+import { IconButton } from '../../../Button/Button';
 import { Input } from '../Input/Input';
 
 const useStyles = makeStyles({

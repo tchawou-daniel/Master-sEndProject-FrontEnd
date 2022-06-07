@@ -16,7 +16,6 @@ export default {
           Quarter: { dateFormat: 'yyyy, QQQ', showQuarterYearPicker: true },
           Year: { dateFormat: 'yyyy', showYearPicker: true },
         },
-        DataGridComponents,
       },
     },
   },
