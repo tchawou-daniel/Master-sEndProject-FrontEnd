@@ -22,7 +22,7 @@ export default combineReducers({
   company: (state: Company | null = null, action: ReduxAction) => {
     switch (action.type) {
       case USER_ACTIONS.SET_CURRENT_USER:
-        return action.payload.user.company || state;
+        return action.payload.user ? action.payload.user.company || state : '';
       case ACTIONS.SET_COMPANY:
         return action.payload.company;
       default:

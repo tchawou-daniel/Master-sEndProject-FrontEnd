@@ -12,7 +12,7 @@ import usersReducer from './users/reducer';
 
 const rootReducer = combineReducers({
   users: usersReducer,
-  companies: companiesReducer,
+  company: companiesReducer,
 });
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

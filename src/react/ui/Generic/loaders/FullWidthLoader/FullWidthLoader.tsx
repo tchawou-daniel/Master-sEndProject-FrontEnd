@@ -3,7 +3,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { FC, memo } from 'react';
 
-import { EmpreinttThemeType, colors } from 'react/ui/branding/theme';
+import { colors, EmpreinttThemeType } from '../../../branding/theme';
 
 const useStyles = makeStyles((theme: EmpreinttThemeType) => ({
   bar: {

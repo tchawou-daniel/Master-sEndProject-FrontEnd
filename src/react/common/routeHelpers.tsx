@@ -26,7 +26,6 @@ export const SpecialRoute: FC<SpecialRouteProps> = ({
       document.title = 'Empreintt';
     }
   }, [title]);
-  console.log(condition);
 
   return (
     <Route

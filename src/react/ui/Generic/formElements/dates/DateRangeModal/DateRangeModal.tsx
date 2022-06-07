@@ -15,15 +15,15 @@ import React, {
   FC, memo, useCallback, useEffect, useState,
 } from 'react';
 
-import { COMMON_MESSAGES } from 'react/common/messages';
-import useSnackbars from 'react/common/useSnackbars';
 import { EmpreinttThemeType } from 'react/ui/branding/theme';
 import Button, { IconButton } from 'react/ui/Generic/Button/Button';
 import DialogTitleWithCloseButton from 'react/ui/Generic/DialogTitleWithCloseButton';
-import { InputLabel } from 'react/ui/Generic/formElements/inputs/Input/Input';
-import { H2 } from 'react/ui/Generic/typography';
 
 import { DateRange } from '../../../../../../types/__common';
+import { COMMON_MESSAGES } from '../../../../../common/messages';
+import useSnackbars from '../../../../../common/useSnackbars';
+import { H2 } from '../../../typography';
+import { InputLabel } from '../../inputs/Input/Input';
 
 interface DateRangeMoment {
   startDate: Moment | null;

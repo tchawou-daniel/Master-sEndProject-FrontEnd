@@ -19,7 +19,7 @@ import { useThunkDispatch } from 'redux/store';
 
 import { logoutCurrentUser } from '../../../../../redux/users/actions';
 import { User, UserRole } from '../../../../../types/users';
-import { empreinttTheme } from '../../../theme';
+import { empreinttTheme } from '../../../branding/theme';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
       borderBottom: '1px solid white',
     },
   },
-  rigthMargin: {
+  marginRight: {
     marginRight: theme.spacing(4),
   },
 }));
@@ -71,7 +71,6 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
 
   const handleProfile = useCallback(() => {
     history.push('/profile');
-
     handleClose();
   }, [handleClose, history]);
 
@@ -79,18 +78,21 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
     localStorage.removeItem('MY_USER_EMAIL');
     localStorage.removeItem('MY_USER_TOKEN_INFO');
     await dispatch(logoutCurrentUser());
-    // handleClose();
-  }, [dispatch]);
+    handleClose();
+    // history.push('/');
+  }, [dispatch, handleClose]);
 
   // eslint-disable-next-line consistent-return
   const menu = (currentUser: User | undefined) => {
-    console.log(currentUser);
     switch (currentUser?.role) {
       case UserRole.ADMIN:
         return (
           <div>
-            <Link className={clsx(classes.link, classes.rigthMargin)} to="/companies">
+            <Link className={clsx(classes.link)} to="/companies">
               Companies
+            </Link>
+            <Link className={clsx(classes.link, classes.marginRight)} to="/agencyusers">
+              Agency users
             </Link>
             <IconButton
               aria-label="account of current user"
@@ -132,8 +134,8 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
         break;
       default:
         return (
-          <Link className={clsx(classes.link, classes.rigthMargin)} to="/auth/register/callback">
-            Compte
+          <Link className={clsx(classes.link, classes.marginRight)} to="/auth/register/callback">
+            Mon compte
           </Link>
         );
     }

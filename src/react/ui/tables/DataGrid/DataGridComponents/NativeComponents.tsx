@@ -8,8 +8,7 @@ import React, {
   FC, useMemo,
 } from 'react';
 
-import { empreinttTheme } from 'react/ui/branding/theme';
-
+import { empreinttTheme } from '../../../branding/theme';
 import { useDatagridStyles } from '../datagridStyles';
 
 // SEARCH

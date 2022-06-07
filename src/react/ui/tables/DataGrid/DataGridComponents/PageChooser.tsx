@@ -5,9 +5,8 @@ import React, {
   FC, memo, useCallback, useState,
 } from 'react';
 
-import { colors } from 'react/ui/branding/theme';
-
 import useDebouncedInput from '../../../../common/useDebouncedInput';
+import { colors } from '../../../branding/theme';
 import { TextFieldBase } from '../../../Generic/formElements/inputs/TextField/TextField';
 
 const useStyles = makeStyles(theme => ({

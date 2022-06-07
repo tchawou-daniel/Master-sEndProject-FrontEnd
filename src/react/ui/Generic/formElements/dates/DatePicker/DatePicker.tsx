@@ -3,11 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { FC, memo } from 'react';
 import ReactDatePicker, { ReactDatePickerProps } from 'react-datepicker';
 
-import useCurrentUser from 'react/common/useCurrentUser';
-import { EmpreinttThemeType } from 'react/ui/branding/theme';
-import { H3 } from 'react/ui/Generic/typography';
-
 import 'react-datepicker/dist/react-datepicker.css';
+import { EmpreinttThemeType } from '../../../../branding/theme';
+import { H3 } from '../../../typography';
 
 const variants = ['year-text', 'quarter', 'month', 'month-text', 'day'];
 
@@ -63,7 +61,6 @@ const useStyles = makeStyles((theme: EmpreinttThemeType) => ({
 
 const DatePicker: FC<ReactDatePickerProps> = (props) => {
   const classes = useStyles();
-  const { user } = useCurrentUser();
   return (
     <ReactDatePicker
       {...props}

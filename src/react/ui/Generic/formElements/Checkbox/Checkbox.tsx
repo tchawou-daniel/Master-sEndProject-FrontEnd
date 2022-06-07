@@ -6,8 +6,7 @@ import clsx from 'clsx';
 import { uniqueId } from 'lodash';
 import React, { memo, FC, useMemo } from 'react';
 
-import { EmpreinttThemeType, colors } from 'react/ui/branding/theme';
-
+import { colors, EmpreinttThemeType } from '../../../branding/theme';
 import { InputLabel } from '../inputs/Input/Input';
 
 export interface CheckboxProps extends Omit<MuiCheckboxProps, 'color'> {

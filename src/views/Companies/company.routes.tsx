@@ -1,5 +1,8 @@
+import { dispatch } from 'd3';
 import React, { FC, memo } from 'react';
+import { useSelector } from 'react-redux';
 import { Switch } from 'react-router-dom';
+import useAsyncEffect from 'use-async-effect';
 
 import { CompanyRoute, ProtectedRoute } from 'react/common/routeHelpers';
 import useCurrentUser from 'react/common/useCurrentUser';
@@ -8,7 +11,7 @@ import CompaniesPage from './CompaniesTable/CompaniesPage';
 
 const CompanyRoutes: FC = () => {
   const { user } = useCurrentUser();
-  console.log(user);
+
   return (
     <Switch>
       {/* <CompanyRoute */}

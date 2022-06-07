@@ -12,12 +12,14 @@ import { useDispatch } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 
+import httpService, { HttpError } from 'services/http';
+
 import { useThunkDispatch } from '../../../../redux/store';
 import { fetchCurrentUser } from '../../../../redux/users/actions';
 import { getUserToken } from '../../../../services/auth/authentification.repository';
 import http from '../../../../services/http';
 import { User } from '../../../../types/users';
-import { empreinttTheme } from '../../../ui/theme';
+import { empreinttTheme } from '../../../ui/branding/theme';
 
 const validationSchema = yup.object({
   email: yup
@@ -56,9 +58,11 @@ const Login:FC = () => {
     onSubmit: async (userToAdd:Partial<User>) => {
       try {
         const token = await getUserToken(userToAdd);
-        http.setJwt(token.data.accessToken);
+        console.log(token.data.accessToken);
         localStorage.setItem('MY_USER_EMAIL', userToAdd.email!);
+        localStorage.setItem('MY_USER_TOKEN_INFO', token.data.accessToken);
         await dispatch(fetchCurrentUser());
+        // httpService.setJwt(localStorage.getItem('MY_USER_TOKEN_INFO'));
         // setSignedInSuccess(true);
         // signInAndFetchUser(signedInSuccess);
         history.push('/companies');

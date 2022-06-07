@@ -5,8 +5,7 @@ import React, {
   FC, memo, useState, useCallback, useMemo,
 } from 'react';
 
-import { EmpreinttThemeType, colors } from 'react/ui/branding/theme';
-
+import { colors, EmpreinttThemeType } from '../../../../branding/theme';
 import { FormElementContainer, Input, InputLabel } from '../Input/Input';
 
 const useStyles = makeStyles((theme: EmpreinttThemeType) => ({

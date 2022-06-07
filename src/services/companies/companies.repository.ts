@@ -2,8 +2,9 @@ import http from 'services/http';
 
 import { Company } from '../../types/Company';
 
-export async function getCompany(): Promise<Company> {
-  const { data } = await http.get('/companies');
+export async function getCompanies(): Promise<Company[]> {
+  const headers = { Authorization: `Bearer ${localStorage.getItem('MY_USER_TOKEN_INFO')}` };
+  const { data } = await http.get<Company[]>('/company', { headers });
   return data;
 }
 
@@ -12,7 +13,8 @@ export async function updateCompany(companyToUpdate: Company): Promise<Company> 
   return data;
 }
 
-export async function addCompany(companyToAdd: Company): Promise<Company> {
-  const { data } = await http.post('/companies', companyToAdd);
+export async function addCompany(companyToAdd: Partial<Company>): Promise<Company> {
+  const headers = { Authorization: `Bearer ${localStorage.getItem('MY_USER_TOKEN_INFO')}` };
+  const { data } = await http.post('/company', companyToAdd, { headers });
   return data;
 }

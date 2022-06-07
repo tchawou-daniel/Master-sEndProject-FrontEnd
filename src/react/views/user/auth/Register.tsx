@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom';
 import * as yup from 'yup';
 
 import { User } from '../../../../types/users';
-import { empreinttTheme } from '../../../ui/theme';
+import { empreinttTheme } from '../../../ui/branding/theme';
 
 const validationSchema = yup.object({
   firstName: yup.string().required('Please enter your First Name'),

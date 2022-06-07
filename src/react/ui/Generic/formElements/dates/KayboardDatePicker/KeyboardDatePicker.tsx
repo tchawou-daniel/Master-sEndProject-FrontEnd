@@ -9,7 +9,8 @@ import React, {
 } from 'react';
 
 import { EmpreinttThemeType } from 'react/ui/branding/theme';
-import { FormElementContainer, InputLabel } from 'react/ui/Generic/formElements/inputs/Input/Input';
+
+import { FormElementContainer, InputLabel } from '../../inputs/Input/Input';
 
 const useStyles = makeStyles((theme: EmpreinttThemeType) => ({
   datePickerInput: {

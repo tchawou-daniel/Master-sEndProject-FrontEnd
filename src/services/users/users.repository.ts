@@ -22,14 +22,9 @@ export const uploadAvatar = async (avatar: string): Promise<User> => {
 };
 
 export const updateUser = async (user: UpdateUserRequest): Promise<User> => {
-  const { data } = await http.put('/users/', user);
+  const { data } = await http.patch(`/users/me/${user.id}`, { ...user, bio: 'Jonin a Konoha', avatar: 'Hang' });
   return data;
 };
-
-// export const updateSettings = async (settings: UserSettings): Promise<User> => {
-//   const { data } = await http.patch('/users/settings', settings);
-//   return data;
-// };
 
 export const fetchUsersByIds = async (userIds: string[]): Promise<User[]> => {
   const { data } = await http.get<User[]>(`/users/?${userIds.map(id => `ids=${id}`).join('&')}`);

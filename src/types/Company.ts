@@ -8,7 +8,7 @@ export type Company = {
   zipCode: string;
   description: string;
   companySector?: CompanySector;
-  hiringStatus: Hiring;
+  hiringStatus: HiringStatus;
   clearedAt: Date;
 };
 export enum CompanyStatus {
@@ -37,7 +37,7 @@ export enum CompanySector {
   SERVICES_AUTRES = 'SERVICES_AUTRES',
 }
 
-export enum Hiring {
+export enum HiringStatus {
   ONGOING = 'ONGOING',
   DEACTIVATE = 'DEACTIVATE',
 }

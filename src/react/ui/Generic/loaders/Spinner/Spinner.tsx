@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
 import BounceLoader from 'react-spinners/BounceLoader';
 
-import { colors } from 'react/ui/branding/theme';
+import { colors } from '../../../branding/theme';
 
 const useStyle = makeStyles({
   spinnerContainer: {

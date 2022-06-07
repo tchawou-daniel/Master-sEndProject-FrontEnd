@@ -12,40 +12,45 @@ import useAdminStyles from '../../useAdminStyles';
 
 const Cell = (cellProps: any) => {
   const { column, tableRow } = cellProps;
-  const { copy } = useClipboard();
 
   const saClasses = useAdminStyles();
 
-  const onClickId = useCallback(() => {
-    copy(tableRow?.row?.plan_id);
-  }, [tableRow.row, copy]);
-
   let content: ReactNode | string = '';
 
-  if (column.name === 'id') {
-    content = (
-      <Box onClick={onClickId}>
-        {cellProps.value}
-      </Box>
-    );
-  }
-
-  if (column.name === 'planTemplateGeneratedDate') {
-    content = (
-      <Box display="flex" flexDirection="column">
-        <Box>{cellProps.value ? moment(cellProps.value, 'YYYY-MM-DD HH:mm:ss').format('YY-MM-DD') : '-'}</Box>
-        <Box>{cellProps.value ? moment(cellProps.value, 'YYYY-MM-DD HH:mm:ss').format('HH:mm:ss') : '-'}</Box>
-      </Box>
-    );
-  }
-
-  if (column.name === 'time') {
-    content = (
-      <Box display="flex" flexDirection="column">
-        <Box>{tableRow.row.buildTimeMs ? `${tableRow.row.buildTimeMs}ms` : '?'}</Box>
-        <Box>{tableRow.row.postBuildTimeMs ? `${tableRow.row.postBuildTimeMs}ms` : '?'}</Box>
-      </Box>
-    );
+  switch (column.name) {
+    case 'name':
+      content = tableRow?.row?.name;
+      break;
+    case 'street':
+      content = tableRow?.row?.admin;
+      break;
+    case 'town':
+      content = tableRow?.row?.town;
+      break;
+    case 'zipCode':
+      content = tableRow?.row?.zipCode;
+      break;
+    case 'companySector':
+      content = tableRow?.row?.companySector;
+      break;
+    case 'companyStatus':
+      content = tableRow?.row?.companyStatus;
+      break;
+    case 'country':
+      content = tableRow?.row?.country;
+      break;
+    case 'description':
+      content = tableRow?.row?.description;
+      break;
+    case 'hiringStatus':
+      content = tableRow?.row?.hiringStatus;
+      break;
+    case 'editCompany':
+      content = 'qsdfsq';
+      break;
+    default:
+      content = '';
+      break;
   }
 
   const cellStyles = useMemo(() => ({

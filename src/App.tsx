@@ -1,6 +1,7 @@
 import { ErrorBoundary } from '@sentry/react';
 import { isEqual } from 'lodash';
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {
   Route, RouteComponentProps, useHistory, useLocation,
 } from 'react-router-dom';
@@ -9,14 +10,9 @@ import useAsyncEffect from 'use-async-effect';
 import { ProtectedRoute } from './react/common/routeHelpers';
 import useCurrentUser from './react/common/useCurrentUser';
 import EmpreinttAppBar from './react/ui/Generic/navigation/Appbar/EmpreinttAppBar';
-import Companies from './react/views/home/Companies';
 import Login from './react/views/user/auth/Login';
+import Profile from './react/views/user/auth/Profile';
 import Register from './react/views/user/auth/Register';
-import { useThunkDispatch } from './redux/store';
-import { fetchCurrentUser } from './redux/users/actions';
-import { ACTIONS } from './redux/users/constants';
-import httpService from './services/http';
-import { UserRole } from './types/users';
 import CompanyRoutes from './views/Companies/company.routes';
 
 // axios.defaults.baseURL = 'http://localhost/5000';
@@ -37,21 +33,16 @@ function App() {
     <>
       <EmpreinttAppBar user={user} />
       {/* <Route path="/" component={Home} /> */}
+      {/*
+      <Route path="/" exact component={Home} />
+*/}
+
       <Route path="/auth/login/callback" component={Login} />
       <Route path="/auth/register/callback" component={Register} />
-
-      {/* <Route path="/companies" component={companies} /> */}
-
-      {/*       {(!user) ? ( */}
-      {/*   <> */}
-      {/*     <EmpreinttAppBar /> */}
-      {/*     <Route path="/auth/login/callback" component={Login} /> */}
-      {/*     <Route path="/auth/register/callback" component={Register} /> */}
-      {/*   </> */}
-      {/* ) : null} */}
-      {/* {(!user) ? ( <EmpreinttAppBar />} */}
-
+      <ProtectedRoute path="/profile" user={user} component={Profile} />
       <ProtectedRoute path="/companies" user={user} component={CompanyRoutes} />
+      {/* <ProtectedRoute path="/agencyusers" user={user} component={CompanyRoutes} /> */}
+      {/* <ProtectedRoute path="/allworkers" user={user} component={CompanyRoutes} /> */}
       {/* ADMIN & EMPLOYMENT_AGENCY */}
       {/* <ProtectedRoute path="/admin/employments" user={user} component={} /> */}
       {/* <ProtectedRoute path="/admin/employments/:employmentId" user={user} component={} /> */}

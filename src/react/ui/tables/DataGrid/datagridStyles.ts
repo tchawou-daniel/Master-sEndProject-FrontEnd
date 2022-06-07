@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-import { EmpreinttThemeType, colors } from 'react/ui/branding/theme';
+import { colors, EmpreinttThemeType } from '../../branding/theme';
 
 export const useDatagridStyles = makeStyles((theme: EmpreinttThemeType) => ({
   root: {

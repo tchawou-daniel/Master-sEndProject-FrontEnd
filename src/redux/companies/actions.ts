@@ -24,9 +24,8 @@ const setCompany: ActionCreator<ReduxAction> = (company: Company) => ({
 
 export const fetchCompany = (): ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
   dispatch(companyStart());
-
   try {
-    const company = await CompaniesRepository.getCompany();
+    const company = await CompaniesRepository.getCompanies();
     return dispatch(setCompany(company));
   } catch (error) {
     return dispatch(companyError(error));
