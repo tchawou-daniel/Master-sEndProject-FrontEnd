@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { addSnackbar } from 'redux/snackbars/actions';
+import { addSnackbar } from '../../redux/snackbars/actions';
 
 export default () => {
   const dispatch = useDispatch();

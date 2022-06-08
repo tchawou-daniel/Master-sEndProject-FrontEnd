@@ -29,3 +29,5 @@ export enum UserRole {
   PARTNER_COMPANY_EMPLOYEE = 'PARTNER_COMPANY_EMPLOYEE',
   PARTNER_COMPANY_EMPLOYEE_ADMIN = 'PARTNER_COMPANY_EMPLOYEE_ADMIN',
 }
+
+export declare type UserComputed = Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'pictureURL'>;

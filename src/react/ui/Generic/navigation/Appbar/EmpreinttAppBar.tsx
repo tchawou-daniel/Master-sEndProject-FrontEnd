@@ -5,13 +5,21 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import {
+  Person as PersonIcon,
+  ExitToApp as ExitToAppIcon,
+
+} from '@material-ui/icons';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import clsx from 'clsx';
-import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
+import React, { FC, useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
+import { useThunkDispatch } from 'redux/store';
+
+import { logoutCurrentUser } from '../../../../../redux/users/actions';
 import { User, UserRole } from '../../../../../types/users';
-import { empreinttTheme } from '../../../theme';
+import { empreinttTheme } from '../../../branding/theme';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -34,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
       borderBottom: '1px solid white',
     },
   },
-  rigthMargin: {
+  marginRight: {
     marginRight: theme.spacing(4),
   },
 }));
@@ -45,6 +53,10 @@ interface EmpreinttAppBarProps {
 const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
   user,
 }) => {
+  const dispatch = useThunkDispatch();
+
+  const history = useHistory();
+
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -53,17 +65,38 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
+
+  const handleProfile = useCallback(() => {
+    history.push('/profile');
+    handleClose();
+  }, [handleClose, history]);
+
+  const handleLogout = useCallback(async () => {
+    localStorage.removeItem('MY_USER_EMAIL');
+    localStorage.removeItem('MY_USER_TOKEN_INFO');
+    await dispatch(logoutCurrentUser());
+    handleClose();
+    // history.push('/');
+  }, [dispatch, handleClose]);
 
   // eslint-disable-next-line consistent-return
   const menu = (currentUser: User | undefined) => {
-    console.log(user);
     switch (currentUser?.role) {
       case UserRole.ADMIN:
         return (
           <div>
+            <Link className={clsx(classes.link)} to="/companies">
+              Companies
+            </Link>
+            <Link className={clsx(classes.link, classes.marginRight)} to="/agencyusers">
+              Agency users
+            </Link>
+            <Link className={clsx(classes.link, classes.marginRight)} to="/workers">
+              Workers
+            </Link>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -88,8 +121,14 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleProfile}>
+                <PersonIcon />
+                Profile
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <ExitToAppIcon />
+                Log out
+              </MenuItem>
             </Menu>
           </div>
         );
@@ -98,8 +137,8 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
         break;
       default:
         return (
-          <Link className={clsx(classes.link, classes.rigthMargin)} to="/auth/register/callback">
-            Compte
+          <Link className={clsx(classes.link, classes.marginRight)} to="/auth/register/callback">
+            Mon compte
           </Link>
         );
     }

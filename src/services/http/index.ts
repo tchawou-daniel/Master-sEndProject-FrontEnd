@@ -50,8 +50,8 @@ axios.interceptors.response.use(response => response, (error) => {
 });
 
 function setJwt(jwt: string | null) {
+  console.log(jwt);
   axios.defaults.headers.common.Authorization = jwt ? `Bearer ${jwt}` : '';
-  localStorage.setItem('MY_USER_TOKEN_INFO', JSON.stringify(jwt));
 }
 
 // ================ AXIOS OVERRIDES ================

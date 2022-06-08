@@ -30,8 +30,10 @@ const AuthorizationProtector: FC = ({ children }) => {
       try {
         if (!user) {
           // Fetch now the full user from our db.
-          const fetchUserAction = await dispatch(fetchCurrentUser());
+          // httpService.setJwt(localStorage.getItem('MY_USER_TOKEN_INFO'));
 
+          const fetchUserAction = await dispatch(fetchCurrentUser());
+          // httpService.setJwt(localStorage.getItem('MY_USER_TOKEN_INFO'));
           // Post login operations.
           if (fetchUserAction.type === ACTIONS.SET_CURRENT_USER) {
             // If user is not an Empreintt admin
@@ -50,17 +52,18 @@ const AuthorizationProtector: FC = ({ children }) => {
               setError(fetchUserAction.error);
             }
           }
-        } else {
-          httpService.setJwt(null);
-          httpService.clearTokenInterceptor();
         }
+        // else {
+        //   httpService.setJwt(null);
+        //   httpService.clearTokenInterceptor();
+        // }
       } catch (thrownError) {
         setError(thrownError);
       }
     },
     () => {
-      httpService.setJwt(null);
-      httpService.clearTokenInterceptor();
+      // httpService.setJwt(null);
+      // httpService.clearTokenInterceptor();
     },
     [],
   );
@@ -80,14 +83,14 @@ const AuthorizationProtector: FC = ({ children }) => {
         <h1>Maintenance page</h1>
       );
     }
-    case (isAuthReady):
-      return <App />;
+    // case (isAuthReady):
+    //   return <App />;
     // Connexion took place, the user is now connected.
     case (!!user):
       return <>{children}</>;
 
     default:
-      return null;
+      return <>{children}</>;
   }
 };
 
