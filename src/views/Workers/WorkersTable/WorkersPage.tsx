@@ -18,7 +18,7 @@ import { DataGridPluginPosition } from '../../../react/ui/tables/DataGrid/DataGr
 import { SmallerGroupCellComponent, SmallerHeaderCellComponent } from '../../../react/ui/tables/DataGrid/DataGridComponents/NativeComponents';
 import { flushUsers } from '../../../redux/users/actions';
 import { selectUsers } from '../../../redux/users/selectors';
-import { addUser } from '../../../services/auth/authentification.repository';
+import { addUser, createAWorker } from '../../../services/auth/authentification.repository';
 import { getUsers } from '../../../services/users/users.repository';
 import { User, UserRole } from '../../../types/users';
 
@@ -91,10 +91,12 @@ const WorkersPage: FC = () => {
       firstName: formValues.firstName,
       lastName: formValues.lastName,
       email: formValues.email,
+      role: formValues.role,
+      password: formValues.password,
     } as unknown as User;
 
     try {
-      await addUser(workerToAdd);
+      await createAWorker(workerToAdd);
       await getData();
       snackSuccess('Worker created!');
       setAddModalOpen(false);
@@ -118,7 +120,7 @@ const WorkersPage: FC = () => {
             onClick={() => setAddModalOpen(true)}
             disabled={isLoading}
           >
-            {isLoading ? 'Loading...' : 'Create an user'}
+            {isLoading ? 'Loading...' : 'Create a worker'}
           </TertiaryBlockButton>
           <WorkerFormAddModal
             isOpen={isAddModalOpen}

@@ -1,6 +1,5 @@
 import {
-  Box,
-  Chip, Dialog, DialogActions, DialogContent, MenuItem,
+  Box, Dialog, DialogActions, DialogContent, MenuItem,
 } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import { Form, Formik } from 'formik';
