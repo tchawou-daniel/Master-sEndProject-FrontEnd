@@ -1,4 +1,3 @@
-import { dispatch } from 'd3';
 import React, { ComponentType, FC, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 

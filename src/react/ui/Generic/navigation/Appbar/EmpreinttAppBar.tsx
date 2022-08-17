@@ -12,7 +12,7 @@ import {
 } from '@material-ui/icons';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import clsx from 'clsx';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import { useThunkDispatch } from 'redux/store';
@@ -82,12 +82,49 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
     // history.push('/');
   }, [dispatch, handleClose]);
 
-  // eslint-disable-next-line consistent-return
-  const menu = (currentUser: User | undefined) => {
+  const profile = useCallback(() => (
+    <>
+      <IconButton
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={handleMenu}
+        color="inherit"
+      >
+        <AccountCircle />
+      </IconButton>
+      <Menu
+        id="menu-appbar"
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleProfile}>
+          <PersonIcon />
+          Profile
+        </MenuItem>
+        <MenuItem onClick={handleLogout}>
+          <ExitToAppIcon />
+          Log out
+        </MenuItem>
+      </Menu>
+    </>
+  ), [anchorEl, handleClose, handleLogout, handleProfile, open]);
+
+  const menu = useCallback((currentUser: User | undefined) => {
     switch (currentUser?.role) {
       case UserRole.ADMIN:
         return (
-          <div>
+          <>
             <Link className={clsx(classes.link)} to="/companies">
               Companies
             </Link>
@@ -97,6 +134,13 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
             <Link className={clsx(classes.link, classes.marginRight)} to="/workers">
               Workers
             </Link>
+            {profile()}
+          </>
+        );
+        break;
+      case UserRole.TEMPORARY_WORKER:
+        return (
+          <>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -106,34 +150,16 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
             >
               <AccountCircle />
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleProfile}>
-                <PersonIcon />
-                Profile
-              </MenuItem>
-              <MenuItem onClick={handleLogout}>
-                <ExitToAppIcon />
-                Log out
-              </MenuItem>
-            </Menu>
-          </div>
+            {profile()}
+          </>
         );
         break;
-      case UserRole.TEMPORARY_WORKER:
+      case UserRole.EMPLOYMENT_AGENCY:
+        return (
+          <>
+            {profile()}
+          </>
+        );
         break;
       default:
         return (
@@ -142,7 +168,7 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
           </Link>
         );
     }
-  };
+  }, [classes.link, classes.marginRight, profile]);
 
   return (
     <div className={classes.root}>
@@ -154,7 +180,6 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
             </Link>
           </Typography>
           {menu(user)}
-
         </Toolbar>
       </AppBar>
     </div>

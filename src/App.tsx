@@ -1,11 +1,8 @@
-import { ErrorBoundary } from '@sentry/react';
 import { isEqual } from 'lodash';
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import {
-  Route, RouteComponentProps, useHistory, useLocation,
+  Route, RouteComponentProps, useLocation,
 } from 'react-router-dom';
-import useAsyncEffect from 'use-async-effect';
 
 import { ProtectedRoute } from './react/common/routeHelpers';
 import useCurrentUser from './react/common/useCurrentUser';
@@ -35,9 +32,7 @@ function App() {
     <>
       <EmpreinttAppBar user={user} />
       {/* <Route path="/" component={Home} /> */}
-      {/*
-      <Route path="/" exact component={Home} />
-*/}
+      {/* <Route path="/" exact component={Home} /> */}
       {!user && (<Route path="/" exact component={Home} />)}
       <Route path="/auth/login/callback" component={Login} />
       <Route path="/auth/register/callback" component={Register} />
