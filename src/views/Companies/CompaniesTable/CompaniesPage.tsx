@@ -8,7 +8,7 @@ import useAsyncEffect from 'use-async-effect';
 
 import { empreinttTheme } from 'react/ui/branding/theme';
 
-import { fetchCompany } from 'redux/companies/actions';
+import { fetchCompanies } from 'redux/companies/actions';
 import { useThunkDispatch } from 'redux/store';
 
 import { addCompany, getCompanies } from 'services/companies/companies.repository';
@@ -72,7 +72,7 @@ const CompaniesPage: FC = () => {
   const [allCompanies, setAllCompanies] = useState<Company[]>([]);
 
   useAsyncEffect(async () => {
-    await dispatch(fetchCompany());
+    await dispatch(fetchCompanies());
   }, [dispatch]);
   const company = useSelector(selectCompanies);
   useEffect(() => {
@@ -103,8 +103,8 @@ const CompaniesPage: FC = () => {
       country: formValues.country,
       description: formValues.description,
       hiringStatus: formValues.hiringStatus,
-
     } as unknown as Company;
+
     try {
       await addCompany(companyToAdd);
       await getData();

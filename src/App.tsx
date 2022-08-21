@@ -21,6 +21,7 @@ function App() {
   // console.log(`user ${user}`);
   // const user = { email: 'sipetchawou@gmail.com' };
   const { pathname } = useLocation();
+  console.log(user);
 
   useEffect(() => {
     if (pathname.endsWith('/callback')) {

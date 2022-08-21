@@ -13,6 +13,12 @@ export const getUsers = async (): Promise<User[]> => {
 
 export const getCurrentUser = async (email:string): Promise<User> => {
   const { data } = await http.get<User>(`/users/me/${email}`);
+  console.log(data);
+  return data;
+};
+
+export const getWorkers = async (): Promise<User[]> => {
+  const { data } = await http.get('/users/workers');
   return data;
 };
 

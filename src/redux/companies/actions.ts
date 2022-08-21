@@ -7,7 +7,6 @@ import { addSnackbar } from 'redux/snackbars/actions';
 
 import * as CompaniesRepository from '../../services/companies/companies.repository';
 import { Company } from '../../types/Company';
-import { User } from '../../types/users';
 
 const companyStart: ActionCreator<ReduxAction> = () => ({
   type: ACTIONS.START,
@@ -23,7 +22,7 @@ const setCompany: ActionCreator<ReduxAction> = (company: Company) => ({
   payload: { company },
 });
 
-export const fetchCompany = (): ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
+export const fetchCompanies = (): ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
   dispatch(companyStart());
   try {
     const company = await CompaniesRepository.getCompanies();

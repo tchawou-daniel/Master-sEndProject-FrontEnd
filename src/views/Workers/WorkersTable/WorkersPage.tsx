@@ -16,10 +16,10 @@ import { TertiaryBlockButton } from '../../../react/ui/Generic/Button/Button';
 import { DataGridPropsOptions } from '../../../react/ui/tables/DataGrid/Datagrid.props';
 import { DataGridPluginPosition } from '../../../react/ui/tables/DataGrid/DataGridComponents/DataGridPlugin';
 import { SmallerGroupCellComponent, SmallerHeaderCellComponent } from '../../../react/ui/tables/DataGrid/DataGridComponents/NativeComponents';
-import { flushUsers } from '../../../redux/users/actions';
-import { selectUsers } from '../../../redux/users/selectors';
+import { fetchWorkers } from '../../../redux/workers/actions';
+import { selectWorkers } from '../../../redux/workers/selectors';
 import { addUser, createAWorker } from '../../../services/auth/authentification.repository';
-import { getUsers } from '../../../services/users/users.repository';
+import { getUsers, getWorkers } from '../../../services/users/users.repository';
 import { User, UserRole } from '../../../types/users';
 
 import WorkersTable from './WorkersTable';
@@ -64,14 +64,17 @@ const WorkersPage: FC = () => {
   const [allWorkers, setAllWorkers] = useState<User[]>([]);
 
   useAsyncEffect(async () => {
-    await dispatch(flushUsers());
+    await dispatch(fetchWorkers());
   }, [dispatch]);
 
-  const users = useSelector(selectUsers);
+  const workers = useSelector(selectWorkers);
 
   useEffect(() => {
-    setAllWorkers(users);
-  }, [users]);
+    // const res = await getWorkers();
+    setAllWorkers(workers);
+  }, [workers]);
+  // console.log('qsdoifpqsd');
+  // console.log(workers);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState<boolean>(false);
@@ -79,7 +82,7 @@ const WorkersPage: FC = () => {
 
   const getData = useCallback(async () => {
     try {
-      const res = await getUsers();
+      const res = await getWorkers();
       setAllWorkers(res);
     } catch (e) {
       snackError(e);
@@ -97,14 +100,14 @@ const WorkersPage: FC = () => {
 
     try {
       await createAWorker(workerToAdd);
-      await getData();
+      // await getData();
       snackSuccess('Worker created!');
       setAddModalOpen(false);
     } catch (e) {
       snackError(`Worker not created! ${e}`);
     }
     setAddModalOpen(false);
-  }, [getData, snackSuccess, snackError]);
+  }, [snackSuccess, snackError]);
 
   return (
     <>
