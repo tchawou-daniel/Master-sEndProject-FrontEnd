@@ -1,5 +1,6 @@
 import { ActionCreator } from 'redux';
 
+import { UpdateUserRequest } from '../../react/common/useCurrentUser';
 import * as WorkersRepository from '../../services/workers/workers.repository';
 import { ReduxAction, ThunkResult } from '../../types/redux';
 
@@ -14,7 +15,7 @@ const workerError: ActionCreator<ReduxAction> = (error: Error) => ({
   error,
 });
 
-const setWorker: ActionCreator<ReduxAction> = (worker: Worker) => ({
+const setWorker: ActionCreator<ReduxAction> = (worker: UpdateUserRequest) => ({
   type: ACTIONS.SET_WORKER,
   payload: { worker },
 });
@@ -22,10 +23,19 @@ const setWorker: ActionCreator<ReduxAction> = (worker: Worker) => ({
 export const fetchWorkers = (): ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
   dispatch(workerStart());
   try {
-    console.log('workers');
     const workers = await WorkersRepository.getWorkers();
-    console.log(workers);
     return dispatch(setWorker(workers));
+  } catch (error) {
+    return dispatch(workerError(error));
+  }
+};
+
+export const updateWorker = (workerToUpdate: UpdateUserRequest)
+: ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
+  dispatch(workerStart());
+  try {
+    const udateWorker = await WorkersRepository.updateWorker(workerToUpdate);
+    return dispatch(setWorker(udateWorker));
   } catch (error) {
     return dispatch(workerError(error));
   }

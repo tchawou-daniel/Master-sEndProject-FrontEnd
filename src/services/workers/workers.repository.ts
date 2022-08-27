@@ -1,9 +1,13 @@
-import { Company } from '../../types/Company';
+import { UpdateUserRequest } from '../../react/common/useCurrentUser';
 import { User } from '../../types/users';
 import http from '../http';
 
 export async function getWorkers(): Promise<User[]> {
-  const headers = { Authorization: `Bearer ${localStorage.getItem('MY_USER_TOKEN_INFO')}` };
-  const { data } = await http.get<User[]>('/users', { headers });
+  const { data } = await http.get<User[]>('/users');
   return data;
 }
+
+export const updateWorker = async (worker: UpdateUserRequest): Promise<User> => {
+  const { data } = await http.patch(`/worker/${worker.id}`, { ...worker });
+  return data;
+};

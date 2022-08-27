@@ -18,9 +18,9 @@ import { DataGridPluginPosition } from '../../../react/ui/tables/DataGrid/DataGr
 import { SmallerGroupCellComponent, SmallerHeaderCellComponent } from '../../../react/ui/tables/DataGrid/DataGridComponents/NativeComponents';
 import { fetchWorkers } from '../../../redux/workers/actions';
 import { selectWorkers } from '../../../redux/workers/selectors';
-import { addUser, createAWorker } from '../../../services/auth/authentification.repository';
-import { getUsers, getWorkers } from '../../../services/users/users.repository';
-import { User, UserRole } from '../../../types/users';
+import { createAWorker } from '../../../services/auth/authentification.repository';
+import { updateWorker } from '../../../services/users/users.repository';
+import { User } from '../../../types/users';
 
 import WorkersTable from './WorkersTable';
 
@@ -30,33 +30,6 @@ const columns = [
   { name: 'lastName', title: 'lastName' },
   { name: 'email', title: 'email' },
 ];
-
-const DATAGRID_OPTIONS: DataGridPropsOptions = {
-  pages: {
-    paginable: true,
-  },
-  columnVisibility: {
-    active: true,
-  },
-  sort: {
-    sortable: true,
-  },
-  // grouping: {
-  //   grouping: [{ columnName: 'workerName' }],
-  // },
-  additionalHeaderComponents: [
-    {
-      key: 'title',
-      children: (
-        <Box>All Workers</Box>
-      ),
-      position: DataGridPluginPosition.rightStart,
-    },
-  ],
-  fullWidth: true,
-  tableHeaderRowComponent: SmallerHeaderCellComponent,
-  tableGroupRowComponent: SmallerGroupCellComponent,
-};
 
 const WorkersPage: FC = () => {
   const dispatch = useThunkDispatch();
@@ -80,15 +53,16 @@ const WorkersPage: FC = () => {
   const [isAddModalOpen, setAddModalOpen] = useState<boolean>(false);
   const closeAddModal = useCallback(() => setAddModalOpen(false), [setAddModalOpen]);
 
-  const getData = useCallback(async () => {
-    try {
-      const res = await getWorkers();
-      setAllWorkers(res);
-    } catch (e) {
-      snackError(e);
-    }
-  }, [snackError]);
+  // const getData = useCallback(async () => {
+  //   try {
+  //     const res = await getWorkers();
+  //     setAllWorkers(res);
+  //   } catch (e) {
+  //     snackError(e);
+  //   }
+  // }, [snackError]);
 
+  // create Worker
   const handleValidateWorker = useCallback(async (formValues:Partial<User>):Promise<void> => {
     const workerToAdd = {
       firstName: formValues.firstName,
@@ -108,6 +82,72 @@ const WorkersPage: FC = () => {
     }
     setAddModalOpen(false);
   }, [snackSuccess, snackError]);
+
+  // company/rates/RateTable  editTable
+  const onCommitChanges = useCallback(({ changed }: any) => {
+    console.log(changed);
+    if (changed) {
+      // Loop through lines that changed
+      Object.keys(changed).filter(ind => !!changed[ind]).map(parseInt).forEach((rowIndex: number) => {
+        console.log(rowIndex);
+        console.log(changed[rowIndex]);
+        console.log(Object.keys(changed).filter(ind => !!changed[ind]));
+        console.log(Object.keys(changed).filter(ind => !!changed[ind]).map(parseInt));
+        console.log(Object.keys(changed[rowIndex]).filter(ind => !!changed[rowIndex][ind]));
+        console.log(Object.keys(changed[rowIndex]).filter(ind => !!changed[rowIndex][ind]).map(parseInt));
+        // Loop through values that changed in this line
+        let newValue;
+        Object.keys(changed[rowIndex]).filter(ind => !!changed[rowIndex][ind]).forEach(async (columnIndex: string) => {
+          newValue = changed[rowIndex][columnIndex];
+          // await updateUser({
+          //   ...allWorkers[rowIndex],
+          //
+          // });
+          await updateWorker({ ...allWorkers[rowIndex], ...changed[rowIndex] });
+          // console.log({ ...allWorkers[rowIndex], ...changed[rowIndex] });
+          console.log(newValue);
+          console.log(allWorkers);
+          console.log(rowIndex);
+          // console.log(allWorkers[rowIndex]);
+        });
+      });
+    }
+  }, [allWorkers]);
+
+  const DATAGRID_OPTIONS: DataGridPropsOptions = {
+    pages: {
+      paginable: true,
+    },
+    columnVisibility: {
+      active: true,
+    },
+    sort: {
+      sortable: true,
+    },
+    // grouping: {
+    //   grouping: [{ columnName: 'workerName' }],
+    // },
+    // Enable search
+    search: {
+      searchable: true,
+    },
+    additionalHeaderComponents: [
+      {
+        key: 'title',
+        children: (
+          <Box>All Workers</Box>
+        ),
+        position: DataGridPluginPosition.rightStart,
+      },
+    ],
+    fullWidth: false,
+    tableHeaderRowComponent: SmallerHeaderCellComponent,
+    tableGroupRowComponent: SmallerGroupCellComponent,
+    cellEdit: {
+      active: true,
+      onCommitChanges,
+    },
+  };
 
   return (
     <>

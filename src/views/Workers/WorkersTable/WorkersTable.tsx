@@ -22,7 +22,6 @@ const WorkersTable: FC<WorkerTableProps> = ({
   datagridOptions,
 }) => (
   <DataGrid
-
     id="workersTable"
     rows={rows}
     columns={columns}

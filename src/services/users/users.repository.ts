@@ -13,12 +13,6 @@ export const getUsers = async (): Promise<User[]> => {
 
 export const getCurrentUser = async (email:string): Promise<User> => {
   const { data } = await http.get<User>(`/users/me/${email}`);
-  console.log(data);
-  return data;
-};
-
-export const getWorkers = async (): Promise<User[]> => {
-  const { data } = await http.get('/users/workers');
   return data;
 };
 
@@ -39,6 +33,18 @@ export const fetchUsersByIds = async (userIds: string[]): Promise<User[]> => {
 
 export const fetchActiveUsers = async () => {
   const { data } = await http.get<User[]>('/users/?active=true');
+  return data;
+};
+
+export const getWorkers = async (): Promise<User[]> => {
+  const { data } = await http.get('/users/workers');
+  return data;
+};
+
+export const updateWorker = async (user: UpdateUserRequest): Promise<User[]> => {
+  console.log(user.id);
+  const { data } = await http.patch(`/users/worker/${user.id}`, { ...user, bio: 'Jonin a Konoha', avatar: 'Hang' });
+  console.log(data);
   return data;
 };
 
