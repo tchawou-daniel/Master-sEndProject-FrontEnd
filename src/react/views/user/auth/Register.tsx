@@ -8,10 +8,12 @@ import { LockOutlined } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 
+import { addUser } from '../../../../services/auth/authentification.repository';
 import { User } from '../../../../types/users';
-import { empreinttTheme } from '../../../ui/theme';
+import { empreinttTheme } from '../../../ui/branding/theme';
 
 const validationSchema = yup.object({
   firstName: yup.string().required('Please enter your First Name'),
@@ -34,6 +36,7 @@ const useStyles = makeStyles(theme => ({
 
 const Register = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   const formik = useFormik({
     initialValues: {
@@ -43,10 +46,9 @@ const Register = () => {
       password: '',
     },
     validationSchema,
-    onSubmit: async (userToAdd:Partial<User>) => {
-      console.log(userToAdd);
-      // await addUser(userToAdd);
-      // alert(JSON.stringify(userToAdd, null, 2));
+    onSubmit: async (userToAdd: Partial<User>) => {
+      const response = await addUser(userToAdd);
+      if (response.status) history.push('/auth/login/callback');
     },
   });
 
@@ -140,7 +142,4 @@ const Register = () => {
     </ThemeProvider>
   );
 };
-
-ReactDOM.render(<Register />, document.getElementById('root'));
-
 export default Register;

@@ -37,6 +37,7 @@ axios.interceptors.response.use(response => response, (error) => {
   // If we find one, then the user token is not valid anymore, so refresh on /
   // Whitelisted unauthorized URLs are managed by the authorization protector and must not refresh the page
   if (error?.response?.status === 401 && !whitelistedUnauthorizedErrors.includes(error?.config?.url)) {
+  // page null
     // window.location.href = '/';
   }
 
@@ -51,7 +52,6 @@ axios.interceptors.response.use(response => response, (error) => {
 
 function setJwt(jwt: string | null) {
   axios.defaults.headers.common.Authorization = jwt ? `Bearer ${jwt}` : '';
-  localStorage.setItem('MY_USER_TOKEN_INFO', JSON.stringify(jwt));
 }
 
 // ================ AXIOS OVERRIDES ================

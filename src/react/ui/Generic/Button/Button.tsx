@@ -4,7 +4,8 @@ import MaterialIconButton from '@material-ui/core/IconButton/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { FC, memo, useMemo } from 'react';
-import { colors, EmpreinttThemeType } from '../../theme';
+
+import { colors, EmpreinttThemeType } from '../../branding/theme';
 
 export const useCommonButtonStyles = makeStyles(() => ({
   smallIconButton: {
@@ -223,21 +224,20 @@ const Button: FC<EmpreinttButtonProps> = ({
   const classes = useButtonStyles();
 
   const computedClassName = useMemo(
-    () =>
-      clsx(
-        // Eventual override.
-        className,
-        // Default style.
-        classes.rootButton,
-        // Size.
-        size
-          ? classes[size as 'small' | 'medium' | 'expanded' | 'large']
-          : classes.medium,
-        // Color.
-        !noColor && classes[color || 'primary'],
-        // Outlined.
-        variant === 'outlined' && classes.outlined,
-      ),
+    () => clsx(
+      // Eventual override.
+      className,
+      // Default style.
+      classes.rootButton,
+      // Size.
+      size
+        ? classes[size as 'small' | 'medium' | 'expanded' | 'large']
+        : classes.medium,
+      // Color.
+      !noColor && classes[color || 'primary'],
+      // Outlined.
+      variant === 'outlined' && classes.outlined,
+    ),
     [variant, color, size, classes, className, noColor],
   );
 
@@ -260,19 +260,19 @@ const Button: FC<EmpreinttButtonProps> = ({
   );
 };
 
-export const DefaultActionButton: FC<EmpreinttButtonProps> = (props) => (
+export const DefaultActionButton: FC<EmpreinttButtonProps> = props => (
   <Button {...props} variant="contained" color="primary" />
 );
 
-export const TertiaryBlockButton: FC<EmpreinttButtonProps> = (props) => (
+export const TertiaryBlockButton: FC<EmpreinttButtonProps> = props => (
   <Button {...props} variant="contained" color="tertiary" />
 );
 
-export const TertiaryButton: FC<EmpreinttButtonProps> = (props) => (
+export const TertiaryButton: FC<EmpreinttButtonProps> = props => (
   <Button {...props} variant="outlined" color="tertiary" />
 );
 
-export const CancelButton: FC<EmpreinttButtonProps> = (props) => (
+export const CancelButton: FC<EmpreinttButtonProps> = props => (
   <Button {...props} variant="outlined" color="default" />
 );
 
@@ -299,18 +299,17 @@ export const IconButton: FC<EmpreinttIconButtonProps> = memo(
     const classes = useButtonStyles();
 
     const computedClassName = useMemo(
-      () =>
-        clsx(
-          // Eventual override.
-          className,
-          // Color.
-          classes[color || 'default'],
-          // Outlined.
-          (variant === 'outlined' || variant === 'iconOnly') &&
-            classes.outlined,
-          // Icon Only
-          variant === 'iconOnly' && classes.iconOnly,
-        ),
+      () => clsx(
+        // Eventual override.
+        className,
+        // Color.
+        classes[color || 'default'],
+        // Outlined.
+        (variant === 'outlined' || variant === 'iconOnly')
+            && classes.outlined,
+        // Icon Only
+        variant === 'iconOnly' && classes.iconOnly,
+      ),
       [variant, color, classes, className],
     );
 
@@ -336,6 +335,4 @@ export const IconButton: FC<EmpreinttIconButtonProps> = memo(
   },
 );
 
-export const DefaultActionIconButton: FC<EmpreinttIconButtonProps> = (
-  props,
-) => <IconButton {...props} variant="iconOnly" color="default" />;
+export const DefaultActionIconButton: FC<EmpreinttIconButtonProps> = props => <IconButton {...props} variant="iconOnly" color="default" />;

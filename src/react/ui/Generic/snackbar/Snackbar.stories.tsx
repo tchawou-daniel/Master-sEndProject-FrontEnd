@@ -2,14 +2,16 @@ import { Meta } from '@storybook/react/types-6-0';
 import { useSnackbar } from 'notistack';
 import React, { FC, useCallback } from 'react';
 
-import useSnackbars from 'react/common/useSnackbars';
+import useSnackbars from '../../../common/useSnackbars';
 
 export default {
   title: 'Generic/Snackbar',
 } as Meta;
 
 export const Variants: FC = () => {
-  const { snackInfo, snackError, snackSuccess, snackWarning } = useSnackbars();
+  const {
+    snackInfo, snackError, snackSuccess, snackWarning,
+  } = useSnackbars();
 
   return (
     <>

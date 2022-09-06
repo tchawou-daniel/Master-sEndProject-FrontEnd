@@ -1,4 +1,3 @@
-import { isEqual } from 'lodash';
 import React, {
   FC, useState,
 } from 'react';
@@ -11,14 +10,6 @@ import { fetchCurrentUser } from 'redux/users/actions';
 import { ACTIONS } from 'redux/users/constants';
 
 import httpService, { HttpError } from 'services/http';
-import log from 'services/log';
-
-import App from '../../App';
-import EmpreinttAppBar from '../../react/ui/Generic/navigation/Appbar/EmpreinttAppBar';
-import Login from '../../react/views/user/auth/Login';
-import { UserRole } from '../../types/users';
-
-import AuthenticationLogin from './Auth/AuthenticationLogin';
 
 const AuthorizationProtector: FC = ({ children }) => {
   const { user } = useCurrentUser();
@@ -28,22 +19,9 @@ const AuthorizationProtector: FC = ({ children }) => {
   useAsyncEffect(
     async (isMounted) => {
       try {
-        if (!user) {
-          // Fetch now the full user from our db.
+        if (!user && localStorage.getItem('MY_USER_TOKEN_INFO')) {
+          httpService.setJwt(localStorage.getItem('MY_USER_TOKEN_INFO'));
           const fetchUserAction = await dispatch(fetchCurrentUser());
-
-          // Post login operations.
-          if (fetchUserAction.type === ACTIONS.SET_CURRENT_USER) {
-            // If user is not an Empreintt admin
-            if (isEqual(fetchUserAction.payload.user.role, UserRole.ADMIN)) {
-              try {
-                // bootstrapTotango(fetchUserAction.payload.user);
-              } catch (e) {
-                log.warn('');
-              }
-            }
-          }
-
           // Error handler.
           if (fetchUserAction.type === ACTIONS.ERROR) {
             if (isMounted()) {
@@ -65,8 +43,6 @@ const AuthorizationProtector: FC = ({ children }) => {
     [],
   );
 
-  const isAuthReady = (!!user || !!error);
-
   switch (true) {
     // The app is actually down but let's pretend it's a planned maintenance lol.
     case (!!error && error.message === 'Network Error'):
@@ -80,14 +56,14 @@ const AuthorizationProtector: FC = ({ children }) => {
         <h1>Maintenance page</h1>
       );
     }
-    case (isAuthReady):
-      return <App />;
+    // case (isAuthReady):
+    //   return <App />;
     // Connexion took place, the user is now connected.
     case (!!user):
       return <>{children}</>;
 
     default:
-      return null;
+      return <>{children}</>;
   }
 };
 

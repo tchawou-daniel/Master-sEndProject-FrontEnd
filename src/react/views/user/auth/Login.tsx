@@ -6,18 +6,23 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { LockOutlined } from '@material-ui/icons';
 import { useFormik } from 'formik';
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC, useCallback, useEffect, useState,
+} from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
+
+import httpService, { HttpError } from 'services/http';
 
 import { useThunkDispatch } from '../../../../redux/store';
 import { fetchCurrentUser } from '../../../../redux/users/actions';
 import { getUserToken } from '../../../../services/auth/authentification.repository';
 import http from '../../../../services/http';
 import { User } from '../../../../types/users';
-import { empreinttTheme } from '../../../ui/theme';
+import useCurrentUser from '../../../common/useCurrentUser';
+import { empreinttTheme } from '../../../ui/branding/theme';
 
 const validationSchema = yup.object({
   email: yup
@@ -41,11 +46,8 @@ const Login:FC = () => {
   const history = useHistory();
   const dispatch = useThunkDispatch();
 
-  const [signedInSuccess, setSignedInSuccess] = useState<boolean>(false);
+  const signInAndFetchUser = useCallback(async () => dispatch(fetchCurrentUser()), [dispatch]);
 
-  // const signInAndFetchUser = (isSignIn:boolean) => async () => {
-  //   if (isSignIn) dispatch(fetchCurrentUser());
-  // };
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -56,11 +58,10 @@ const Login:FC = () => {
     onSubmit: async (userToAdd:Partial<User>) => {
       try {
         const token = await getUserToken(userToAdd);
-        http.setJwt(token.data.accessToken);
         localStorage.setItem('MY_USER_EMAIL', userToAdd.email!);
-        await dispatch(fetchCurrentUser());
-        // setSignedInSuccess(true);
-        // signInAndFetchUser(signedInSuccess);
+        localStorage.setItem('MY_USER_TOKEN_INFO', token.data.accessToken);
+        httpService.setJwt(localStorage.getItem('MY_USER_TOKEN_INFO'));
+        await signInAndFetchUser();
         history.push('/companies');
       } catch (error){
         await Promise.reject(error);
@@ -119,7 +120,7 @@ const Login:FC = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link
-                  href="/auth/register"
+                  href="/auth/register/callback"
                 >
                   Do you want to create an account? Sign In
                 </Link>
