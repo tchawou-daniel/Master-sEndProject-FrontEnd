@@ -1,16 +1,15 @@
 import {
-  Box,
-  Dialog, DialogActions, DialogContent,
+  Box, Dialog, DialogActions, DialogContent, MenuItem,
 } from '@material-ui/core';
+import Select from '@material-ui/core/Select';
 import { Form, Formik } from 'formik';
-import React, {
-  FC, memo,
-} from 'react';
-import * as yup from 'yup';
+import React, { FC, memo, useMemo } from 'react';
+import * as Yup from 'yup';
 
 import DialogTitleWithCloseButton from 'react/ui/Generic/DialogTitleWithCloseButton';
 
-import { User } from '../../../../types/users';
+import { User, UserRole } from '../../../../types/users';
+import { empreinttTheme } from '../../branding/theme';
 import { CancelButton, DefaultActionButton } from '../../Generic/Button/Button';
 import TextField from '../../Generic/formElements/inputs/TextField/TextField';
 
@@ -20,22 +19,32 @@ interface WorkerFormAddProps {
   onCancel: () => any;
 }
 
-const workerSchema = yup.object().shape({
-  firstName: yup.string().required('Please enter your First Name'),
-  lastName: yup.string().required('Please enter your Last Name'),
-  email: yup
+const workerSchema = Yup.object().shape({
+  firstName: Yup.string().required('Please enter your First Name'),
+  lastName: Yup.string().required('Please enter your Last Name'),
+  email: Yup
     .string()
     .email('Enter a valid email')
     .required('Email is required'),
+  role: Yup.mixed<UserRole>().oneOf(Object.values(UserRole)),
+  password: Yup.string().required(),
 });
 
 export const WorkerFormAddModal: FC<WorkerFormAddProps> = ({
   isOpen, onCancel, onSubmit,
 }) => {
-  const initialValues = {
+  const initialValues = useMemo(() => ({
     firstName: '',
     lastName: '',
     email: '',
+    role: UserRole.TEMPORARY_WORKER,
+    password: 'SuperSecretP4word',
+  }), []);
+
+  const [userRole, setUserRole] = React.useState<string | UserRole>(UserRole.TEMPORARY_WORKER);
+
+  const handleChangeUserRole = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setUserRole(event.target.value as UserRole);
   };
 
   return (
@@ -87,6 +96,20 @@ export const WorkerFormAddModal: FC<WorkerFormAddProps> = ({
                 component={TextField}
                 required
               />
+              <Box marginTop={empreinttTheme.spacing(0.2)}>
+                <Select
+                  labelId="userRole"
+                  id="userRole"
+                  value={userRole}
+                  onChange={handleChangeUserRole}
+                >
+                  {([UserRole.TEMPORARY_WORKER, UserRole.PERMANENT_WORKER]).map(option => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
             </DialogContent>
             <DialogActions>
               <CancelButton onClick={onCancel}>

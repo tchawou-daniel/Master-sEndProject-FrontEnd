@@ -3,11 +3,9 @@ import { ActionCreator } from 'redux';
 import { ReduxAction, ThunkResult } from 'types/redux';
 
 import { ACTIONS } from 'redux/companies/constants';
-import { addSnackbar } from 'redux/snackbars/actions';
 
 import * as CompaniesRepository from '../../services/companies/companies.repository';
 import { Company } from '../../types/Company';
-import { User } from '../../types/users';
 
 const companyStart: ActionCreator<ReduxAction> = () => ({
   type: ACTIONS.START,
@@ -23,7 +21,7 @@ const setCompany: ActionCreator<ReduxAction> = (company: Company) => ({
   payload: { company },
 });
 
-export const fetchCompany = (): ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
+export const fetchCompanies = (): ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
   dispatch(companyStart());
   try {
     const company = await CompaniesRepository.getCompanies();
@@ -33,15 +31,18 @@ export const fetchCompany = (): ThunkResult<Promise<ReduxAction>> => async (disp
   }
 };
 
-export const patchCompany = (
-  company: Company,
+const removeCompany: ActionCreator<ReduxAction> = (companyId: string) => ({
+  type: ACTIONS.DELETE_COMPANY,
+  payload: { companyId },
+});
+
+export const deleteCompany = (
+  companyId: string,
 ): ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
   dispatch(companyStart());
-
   try {
-    const updatedCompany = await CompaniesRepository.updateCompany(company);
-    dispatch(addSnackbar({ message: 'Company updated!', options: { variant: 'success' } }));
-    return dispatch(setCompany(updatedCompany));
+    await CompaniesRepository.deleteCompany(companyId);
+    return dispatch(removeCompany(companyId));
   } catch (error) {
     return dispatch(companyError(error));
   }

@@ -9,7 +9,6 @@ const useStyles = makeStyles(theme => ({
 }));
 const Companies = () => {
   const classes = useStyles();
-  console.log('companies2');
   return (
     <h1>Companies</h1>
   );

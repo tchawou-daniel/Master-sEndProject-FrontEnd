@@ -1,11 +1,7 @@
-import { ErrorBoundary } from '@sentry/react';
-import { isEqual } from 'lodash';
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import {
-  Route, RouteComponentProps, useHistory, useLocation,
+  Route, useLocation,
 } from 'react-router-dom';
-import useAsyncEffect from 'use-async-effect';
 
 import { ProtectedRoute } from './react/common/routeHelpers';
 import useCurrentUser from './react/common/useCurrentUser';
@@ -14,6 +10,7 @@ import Home from './react/views/home/Home';
 import Login from './react/views/user/auth/Login';
 import Profile from './react/views/user/auth/Profile';
 import Register from './react/views/user/auth/Register';
+import AgencyRoutes from './views/Agency/agency.routes';
 import CompanyRoutes from './views/Companies/company.routes';
 import WorkerRoutes from './views/Workers/worker.routes';
 
@@ -21,8 +18,6 @@ import WorkerRoutes from './views/Workers/worker.routes';
 
 function App() {
   const { user } = useCurrentUser();
-  // console.log(`user ${user}`);
-  // const user = { email: 'sipetchawou@gmail.com' };
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -35,9 +30,7 @@ function App() {
     <>
       <EmpreinttAppBar user={user} />
       {/* <Route path="/" component={Home} /> */}
-      {/*
-      <Route path="/" exact component={Home} />
-*/}
+      {/* <Route path="/" exact component={Home} /> */}
       {!user && (<Route path="/" exact component={Home} />)}
       <Route path="/auth/login/callback" component={Login} />
       <Route path="/auth/register/callback" component={Register} />
@@ -45,6 +38,7 @@ function App() {
       <ProtectedRoute path="/profile" user={user} component={Profile} />
       <ProtectedRoute path="/companies" user={user} component={CompanyRoutes} />
       <ProtectedRoute path="/workers" user={user} component={WorkerRoutes} />
+      <ProtectedRoute path="/agency" user={user} component={AgencyRoutes} />
       {/* <ProtectedRoute path="/agencyusers" user={user} component={CompanyRoutes} /> */}
       {/* <ProtectedRoute path="/allworkers" user={user} component={CompanyRoutes} /> */}
       {/* ADMIN & EMPLOYMENT_AGENCY */}
@@ -79,7 +73,4 @@ function App() {
   );
 }
 
-const RouterPage = (
-  props: { pageComponent: JSX.Element } & RouteComponentProps,
-) => props.pageComponent;
 export default App;

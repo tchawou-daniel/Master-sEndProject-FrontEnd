@@ -1,6 +1,8 @@
 import { Plugin, Template, TemplatePlaceholder } from '@devexpress/dx-react-core';
 import { Box } from '@material-ui/core';
-import React, { FC, memo, ReactNode } from 'react';
+import React, {
+  FC, memo, ReactNode, Fragment,
+} from 'react';
 
 // PLUGINS
 export enum DataGridPluginPosition {
@@ -20,7 +22,8 @@ export interface DataGridPluginDefinition {
 export interface DataGridPluginsProps {
   plugins: DataGridPluginDefinition[];
 }
-const DataGridPlugins: FC<DataGridPluginsProps> = ({ plugins }) => (
+
+const DataGridPlugins: FC<DataGridPluginsProps> = memo(({ plugins }) => (
   <Plugin>
     <Template name="toolbarContent">
       <Box
@@ -36,11 +39,11 @@ const DataGridPlugins: FC<DataGridPluginsProps> = ({ plugins }) => (
           >
             <Box display="flex" flexDirection="row" width="100%" alignItems="center">
               {plugins.filter(p => (p.position === DataGridPluginPosition.rightStart)).map(p => (
-                <React.Fragment key={p.key}>{p.children}</React.Fragment>
+                <Fragment key={p.key}>{p.children}</Fragment>
               ))}
               <TemplatePlaceholder />
               {plugins.filter(p => (p.position === DataGridPluginPosition.rightEnd)).map(p => (
-                <React.Fragment key={p.key}>{p.children}</React.Fragment>
+                <Fragment key={p.key}>{p.children}</Fragment>
               ))}
 
             </Box>
@@ -53,13 +56,13 @@ const DataGridPlugins: FC<DataGridPluginsProps> = ({ plugins }) => (
           <Box display="flex" flexDirection="row-reverse" width="100%">
 
             {plugins.filter(p => (p.position === DataGridPluginPosition.bottomLeft)).map(p => (
-              <Box width="100%">
-                <React.Fragment key={p.key}>{p.children}</React.Fragment>
+              <Box width="100%" key={p.key}>
+                {p.children}
               </Box>
             ))}
             {plugins.filter(p => (p.position === DataGridPluginPosition.bottomRight)).map(p => (
               <Box width="100%">
-                <React.Fragment key={p.key}>{p.children}</React.Fragment>
+                <Fragment key={p.key}>{p.children}</Fragment>
               </Box>
             ))}
 
@@ -69,5 +72,6 @@ const DataGridPlugins: FC<DataGridPluginsProps> = ({ plugins }) => (
     </Template>
 
   </Plugin>
-);
-export default memo(DataGridPlugins);
+));
+
+export default DataGridPlugins;

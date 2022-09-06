@@ -6,7 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { LockOutlined } from '@material-ui/icons';
 import { useFormik } from 'formik';
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC, useCallback, useEffect, useState,
+} from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
@@ -19,6 +21,7 @@ import { fetchCurrentUser } from '../../../../redux/users/actions';
 import { getUserToken } from '../../../../services/auth/authentification.repository';
 import http from '../../../../services/http';
 import { User } from '../../../../types/users';
+import useCurrentUser from '../../../common/useCurrentUser';
 import { empreinttTheme } from '../../../ui/branding/theme';
 
 const validationSchema = yup.object({
@@ -43,11 +46,8 @@ const Login:FC = () => {
   const history = useHistory();
   const dispatch = useThunkDispatch();
 
-  const [signedInSuccess, setSignedInSuccess] = useState<boolean>(false);
+  const signInAndFetchUser = useCallback(async () => dispatch(fetchCurrentUser()), [dispatch]);
 
-  // const signInAndFetchUser = (isSignIn:boolean) => async () => {
-  //   if (isSignIn) dispatch(fetchCurrentUser());
-  // };
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -58,13 +58,10 @@ const Login:FC = () => {
     onSubmit: async (userToAdd:Partial<User>) => {
       try {
         const token = await getUserToken(userToAdd);
-        console.log(token.data.accessToken);
         localStorage.setItem('MY_USER_EMAIL', userToAdd.email!);
         localStorage.setItem('MY_USER_TOKEN_INFO', token.data.accessToken);
-        await dispatch(fetchCurrentUser());
-        // httpService.setJwt(localStorage.getItem('MY_USER_TOKEN_INFO'));
-        // setSignedInSuccess(true);
-        // signInAndFetchUser(signedInSuccess);
+        httpService.setJwt(localStorage.getItem('MY_USER_TOKEN_INFO'));
+        await signInAndFetchUser();
         history.push('/companies');
       } catch (error){
         await Promise.reject(error);

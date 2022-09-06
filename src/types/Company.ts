@@ -1,13 +1,13 @@
 export type Company = {
   id: string,
   name: string,
-  companyStatus:CompanyStatus;
+  companyStatus: CompanyStatus;
   country: string;
   town: string;
   street: string;
   zipCode: string;
   description: string;
-  companySector?: CompanySector;
+  companySector: CompanySector;
   hiringStatus: HiringStatus;
   clearedAt: Date;
 };

@@ -49,6 +49,12 @@ export const usePageHeaderStyles = makeStyles((theme: EmpreinttThemeType) => ({
   rightActions: {
     marginLeft: theme.spacing(2),
   },
+  linkAction: {
+    textDecoration: 'none',
+  },
+  headerBorderRight: {
+    borderRight: `1px solid ${theme.palette.grey[200]}`,
+  },
 }));
 
 export const usePageSectionStyles = makeStyles(theme => ({

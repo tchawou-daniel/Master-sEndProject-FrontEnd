@@ -1,7 +1,7 @@
 import { Box, Paper } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import React, {
-  FC, memo, useCallback, useEffect, useState,
+  FC, memo, useCallback, useEffect, useMemo, useState,
 } from 'react';
 import { useSelector } from 'react-redux';
 import useAsyncEffect from 'use-async-effect';
@@ -12,14 +12,15 @@ import { useThunkDispatch } from 'redux/store';
 
 import useSnackbars from '../../../react/common/useSnackbars';
 import { WorkerFormAddModal } from '../../../react/ui/Business/workerModals/WorkerFormAddModal';
+import WorkerFormEditModal from '../../../react/ui/Business/workerModals/WorkerFormEditModal';
 import { TertiaryBlockButton } from '../../../react/ui/Generic/Button/Button';
 import { DataGridPropsOptions } from '../../../react/ui/tables/DataGrid/Datagrid.props';
 import { DataGridPluginPosition } from '../../../react/ui/tables/DataGrid/DataGridComponents/DataGridPlugin';
 import { SmallerGroupCellComponent, SmallerHeaderCellComponent } from '../../../react/ui/tables/DataGrid/DataGridComponents/NativeComponents';
-import { flushUsers } from '../../../redux/users/actions';
-import { selectUsers } from '../../../redux/users/selectors';
-import { addUser } from '../../../services/auth/authentification.repository';
-import { getUsers } from '../../../services/users/users.repository';
+import { deleteWorker, fetchWorkers } from '../../../redux/workers/actions';
+import { selectWorkers } from '../../../redux/workers/selectors';
+import { createAWorker } from '../../../services/auth/authentification.repository';
+import { getWorkers, updateWorker } from '../../../services/workers/workers.repository';
 import { User, UserRole } from '../../../types/users';
 
 import WorkersTable from './WorkersTable';
@@ -29,34 +30,9 @@ const columns = [
   { name: 'firstName', title: 'firstName' },
   { name: 'lastName', title: 'lastName' },
   { name: 'email', title: 'email' },
+  { name: 'role', title: 'role' },
+  { name: 'actions', title: 'Actions' },
 ];
-
-const DATAGRID_OPTIONS: DataGridPropsOptions = {
-  pages: {
-    paginable: true,
-  },
-  columnVisibility: {
-    active: true,
-  },
-  sort: {
-    sortable: true,
-  },
-  // grouping: {
-  //   grouping: [{ columnName: 'workerName' }],
-  // },
-  additionalHeaderComponents: [
-    {
-      key: 'title',
-      children: (
-        <Box>All Workers</Box>
-      ),
-      position: DataGridPluginPosition.rightStart,
-    },
-  ],
-  fullWidth: true,
-  tableHeaderRowComponent: SmallerHeaderCellComponent,
-  tableGroupRowComponent: SmallerGroupCellComponent,
-};
 
 const WorkersPage: FC = () => {
   const dispatch = useThunkDispatch();
@@ -64,37 +40,52 @@ const WorkersPage: FC = () => {
   const [allWorkers, setAllWorkers] = useState<User[]>([]);
 
   useAsyncEffect(async () => {
-    await dispatch(flushUsers());
+    await dispatch(fetchWorkers());
   }, [dispatch]);
+  const workers = useSelector(selectWorkers);
 
-  const users = useSelector(selectUsers);
+  useAsyncEffect(async () => {
+    const resWorkers = await getWorkers();
+    setAllWorkers(resWorkers?.filter(worker => ([UserRole.PERMANENT_WORKER, UserRole.TEMPORARY_WORKER].map(role => role).includes(worker.role))));
+  }, [workers]);
 
-  useEffect(() => {
-    setAllWorkers(users);
-  }, [users]);
-
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState<boolean>(false);
   const closeAddModal = useCallback(() => setAddModalOpen(false), [setAddModalOpen]);
 
-  const getData = useCallback(async () => {
-    try {
-      const res = await getUsers();
-      setAllWorkers(res);
-    } catch (e) {
-      snackError(e);
-    }
-  }, [snackError]);
+  const DATAGRID_OPTIONS: DataGridPropsOptions = useMemo(() => ({
+    pages: {
+      paginable: true,
+    },
+    sort: {
+      sortable: true,
+    },
+    // Enable search
+    search: {
+      searchable: true,
+    },
+    fullWidth: false,
+    tableHeaderRowComponent: SmallerHeaderCellComponent,
+    tableGroupRowComponent: SmallerGroupCellComponent,
+  }), []);
 
+  const getData = useCallback(async () => {
+    const workersResults = await getWorkers();
+    setAllWorkers(workersResults.filter(worker => ([UserRole.PERMANENT_WORKER, UserRole.TEMPORARY_WORKER].map(role => role).includes(worker.role))));
+  }, []);
+
+  // create Worker
   const handleValidateWorker = useCallback(async (formValues:Partial<User>):Promise<void> => {
     const workerToAdd = {
       firstName: formValues.firstName,
       lastName: formValues.lastName,
       email: formValues.email,
+      role: formValues.role,
+      password: formValues.password,
     } as unknown as User;
 
     try {
-      await addUser(workerToAdd);
+      await createAWorker(workerToAdd);
       await getData();
       snackSuccess('Worker created!');
       setAddModalOpen(false);
@@ -102,6 +93,45 @@ const WorkersPage: FC = () => {
       snackError(`Worker not created! ${e}`);
     }
     setAddModalOpen(false);
+  }, [getData, snackSuccess, snackError]);
+
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedWorkers, setSelectedWorkers] = useState<User | null>(null);
+  const handleCancel = useCallback(() => setIsFormOpen(false), [setIsFormOpen]);
+
+  const openForm = useCallback((agencyUsersDefinition: User | null) => {
+    setIsFormOpen(true);
+    setSelectedWorkers(agencyUsersDefinition);
+  }, []);
+
+  const handleDeleteWorkers = useCallback(async (agencyUsersId: string) => {
+    await dispatch(deleteWorker(agencyUsersId));
+    await getData();
+  }, [dispatch, getData]);
+
+  const listActions = useMemo(() => ({
+    onClickEdit: openForm,
+    onClickDelete: handleDeleteWorkers,
+  }), [openForm, handleDeleteWorkers]);
+
+  const handleEditWorker = useCallback(async (formValues:Partial<User>) => {
+    const workerToEdit = {
+      id: formValues.id,
+      firstName: formValues.firstName,
+      lastName: formValues.lastName,
+      email: formValues.email,
+      role: formValues.role,
+    } as unknown as User;
+
+    try {
+      await updateWorker(workerToEdit);
+      await getData();
+      snackSuccess('User updated!');
+      setIsFormOpen(false);
+    } catch (e) {
+      snackError(`user not updated! ${e}`);
+    }
+    setIsFormOpen(false);
   }, [getData, snackSuccess, snackError]);
 
   return (
@@ -118,7 +148,7 @@ const WorkersPage: FC = () => {
             onClick={() => setAddModalOpen(true)}
             disabled={isLoading}
           >
-            {isLoading ? 'Loading...' : 'Create an user'}
+            {isLoading ? 'Loading...' : 'Create a worker'}
           </TertiaryBlockButton>
           <WorkerFormAddModal
             isOpen={isAddModalOpen}
@@ -129,11 +159,17 @@ const WorkersPage: FC = () => {
 
       </Paper>
       <Paper>
-
+        <WorkerFormEditModal
+          worker={selectedWorkers}
+          isOpen={isFormOpen}
+          handleCancel={handleCancel}
+          handleSubmit={handleEditWorker}
+        />
         <WorkersTable
           rows={allWorkers || []}
           columns={columns}
           datagridOptions={DATAGRID_OPTIONS}
+          actions={listActions}
         />
       </Paper>
     </>

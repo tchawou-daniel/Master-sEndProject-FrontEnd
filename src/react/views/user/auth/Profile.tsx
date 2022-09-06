@@ -48,9 +48,8 @@ const Profile = () => {
       // password: user.password,
     },
     validationSchema,
-    onSubmit: async (userToAdd: any) => {
-      const updatedUser = { ...userToAdd, id: user.id, lang: user.role };
-      const data = await updateUser(updatedUser);
+    onSubmit: async (userToUpdate: any) => {
+      const data = await updateUser({ ...userToUpdate, id: user.id, role: user.role });
       if (data) {
         await dispatch(setCurrentUser({ ...user, ...data }));
         setEdit(false);
@@ -64,7 +63,6 @@ const Profile = () => {
     setEdit(true);
     event.preventDefault();
   };
-  // console.log("the current user ", user)
   return (
     <ThemeProvider theme={empreinttTheme}>
       <Container component="main" maxWidth="sm">
@@ -116,7 +114,6 @@ const Profile = () => {
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
             />
-
             <Button
               color="primary"
               variant="contained"
@@ -126,7 +123,6 @@ const Profile = () => {
             >
               {edit ? 'Submit' : 'Edit'}
             </Button>
-
           </form>
           {edit && (
           <Button
