@@ -128,7 +128,7 @@ const EmpreinttAppBar:FC<EmpreinttAppBarProps> = ({
             <Link className={clsx(classes.link)} to="/companies">
               Companies
             </Link>
-            <Link className={clsx(classes.link, classes.marginRight)} to="/agencyusers">
+            <Link className={clsx(classes.link, classes.marginRight)} to="/agency">
               Agency users
             </Link>
             <Link className={clsx(classes.link, classes.marginRight)} to="/workers">

@@ -3,7 +3,6 @@ import { ActionCreator } from 'redux';
 import { ReduxAction, ThunkResult } from 'types/redux';
 
 import { ACTIONS } from 'redux/companies/constants';
-import { addSnackbar } from 'redux/snackbars/actions';
 
 import * as CompaniesRepository from '../../services/companies/companies.repository';
 import { Company } from '../../types/Company';
@@ -32,15 +31,18 @@ export const fetchCompanies = (): ThunkResult<Promise<ReduxAction>> => async (di
   }
 };
 
-export const patchCompany = (
-  company: Company,
+const removeCompany: ActionCreator<ReduxAction> = (companyId: string) => ({
+  type: ACTIONS.DELETE_COMPANY,
+  payload: { companyId },
+});
+
+export const deleteCompany = (
+  companyId: string,
 ): ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
   dispatch(companyStart());
-
   try {
-    const updatedCompany = await CompaniesRepository.updateCompany(company);
-    dispatch(addSnackbar({ message: 'Company updated!', options: { variant: 'success' } }));
-    return dispatch(setCompany(updatedCompany));
+    await CompaniesRepository.deleteCompany(companyId);
+    return dispatch(removeCompany(companyId));
   } catch (error) {
     return dispatch(companyError(error));
   }

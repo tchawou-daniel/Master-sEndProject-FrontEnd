@@ -63,7 +63,6 @@ const Profile = () => {
     setEdit(true);
     event.preventDefault();
   };
-  // console.log("the current user ", user)
   return (
     <ThemeProvider theme={empreinttTheme}>
       <Container component="main" maxWidth="sm">

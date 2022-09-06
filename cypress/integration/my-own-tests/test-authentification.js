@@ -16,7 +16,7 @@ describe('Auth tests', () => {
     cy.contains('Already have an account? Sign Up').click({ force: true });
     cy.url().should('eq', 'http://localhost:3000/auth/login/callback');
 
-    cy.get('[name="email"]').type('jeremi@gmail.com', { force: true });
+    cy.get('[name="email"]').type('jeremi@hotmail.com', { force: true });
     cy.get('[name="password"]').type('SuperSecretP4word', { force: true });
     cy.contains('Submit').click({ force: true });
   });
@@ -30,7 +30,7 @@ describe('Auth tests', () => {
     cy.contains('Already have an account? Sign Up').click({ force: true });
     cy.url().should('eq', 'http://localhost:3000/auth/login/callback');
 
-    cy.get('[name="email"]').type('jeremi@gmail.com', { force: true });
+    cy.get('[name="email"]').type('jeremi@hotmail.com', { force: true });
     cy.get('[name="password"]').type('SuperSecretP4word', { force: true });
     cy.contains('Submit').click({ force: true });
 

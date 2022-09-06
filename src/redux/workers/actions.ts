@@ -1,6 +1,7 @@
 import { ActionCreator } from 'redux';
 
 import { UpdateUserRequest } from '../../react/common/useCurrentUser';
+import * as CompaniesRepository from '../../services/companies/companies.repository';
 import * as WorkersRepository from '../../services/workers/workers.repository';
 import { ReduxAction, ThunkResult } from '../../types/redux';
 
@@ -36,6 +37,23 @@ export const updateWorker = (workerToUpdate: UpdateUserRequest)
   try {
     const udateWorker = await WorkersRepository.updateWorker(workerToUpdate);
     return dispatch(setWorker(udateWorker));
+  } catch (error) {
+    return dispatch(workerError(error));
+  }
+};
+
+const removeWoker: ActionCreator<ReduxAction> = (companyId: string) => ({
+  type: ACTIONS.DELETE_WORKER,
+  payload: { companyId },
+});
+
+export const deleteWorker = (
+  workerId: string,
+): ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
+  dispatch(workerStart());
+  try {
+    await WorkersRepository.deleteWorker(workerId);
+    return dispatch(removeWoker(workerId));
   } catch (error) {
     return dispatch(workerError(error));
   }

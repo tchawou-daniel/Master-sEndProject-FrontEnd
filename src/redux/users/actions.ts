@@ -26,7 +26,8 @@ export const setCurrentUser: ActionCreator<ReduxAction> = (
   payload: { user },
 });
 
-export const updateCurrentUser = (user: UpdateUserRequest): ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
+export const updateCurrentUser = (user: UpdateUserRequest):
+ThunkResult<Promise<ReduxAction>> => async (dispatch) => {
   dispatch(usersStart());
   try {
     const updatedUser = await UsersRepository.updateUser(user);

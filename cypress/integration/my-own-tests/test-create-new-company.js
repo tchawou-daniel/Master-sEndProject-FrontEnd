@@ -16,7 +16,7 @@ describe('Create a new company', () => {
     cy.contains('Already have an account? Sign Up').click({ force: true });
     cy.url().should('eq', 'http://localhost:3000/auth/login/callback');
 
-    cy.get('[name="email"]').type('jeremi@gmail.com', { force: true });
+    cy.get('[name="email"]').type('jeremi@hotmail.com', { force: true });
     cy.get('[name="password"]').type('SuperSecretP4word', { force: true });
     cy.contains('Submit').click({ force: true });
 
@@ -28,6 +28,12 @@ describe('Create a new company', () => {
     cy.get('[name="town"]').type('comapny town 2', { force: true });
     cy.get('[name="zipCode"]').type('company zipCode3', { force: true });
     cy.get('[name="country"]').type('comapny country3', { force: true });
+    cy.get('[data-cy="input-companySector"]').click();
+    cy.get('[data-cy="select-option-companySector-ENSEIGNEMENT"]').click();
+    cy.get('[data-cy="input-companyStatus"]').click();
+    cy.get('[data-cy="select-option-companyStatus-INACTIVE"]').click();
+    cy.get('[data-cy="input-hiringStatus"]').click();
+    cy.get('[data-cy="select-option-hiringStatus-ONGOING"]').click();
     cy.get('[name="description"]').eq(1).type('comapnydescription 3', { force: true });
     cy.contains('Submit').click({ force: true });
   });

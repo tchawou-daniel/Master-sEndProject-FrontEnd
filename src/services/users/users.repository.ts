@@ -36,16 +36,4 @@ export const fetchActiveUsers = async () => {
   return data;
 };
 
-export const getWorkers = async (): Promise<User[]> => {
-  const { data } = await http.get('/users/workers');
-  return data;
-};
-
-export const updateWorker = async (user: UpdateUserRequest): Promise<User[]> => {
-  console.log(user.id);
-  const { data } = await http.patch(`/users/worker/${user.id}`, { ...user, bio: 'Jonin a Konoha', avatar: 'Hang' });
-  console.log(data);
-  return data;
-};
-
 export {};

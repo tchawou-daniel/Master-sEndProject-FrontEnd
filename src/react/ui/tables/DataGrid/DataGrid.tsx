@@ -24,11 +24,17 @@ import {
   TableFixedColumns,
 } from '@devexpress/dx-react-grid-material-ui';
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC, useCallback, useEffect, useMemo, useState,
 } from 'react';
 import store from 'store';
 
+import { ReactComponent as PinOffIcon } from '../../../../images/customIcons/mdi_pin-off.svg';
+import { ReactComponent as PinIcon } from '../../../../images/customIcons/mdi_pin.svg';
+import { useCustomIconStyles } from '../../../common/_common';
+import { DefaultActionIconButton } from '../../Generic/Button/Button';
+
 import { DataGridProps } from './Datagrid.props';
+import DataGridPlugins, { DataGridPluginDefinition, DataGridPluginPosition } from './DataGridComponents/DataGridPlugin';
 import {
   DatagridSearchInput,
   InitialWidthTableComponent,
@@ -49,7 +55,7 @@ const DataGrid: FC<DataGridProps> = ({
   options,
 }) => {
   const classes = useDatagridStyles();
-  // const iconClasses = useCustomIconStyles();
+  const iconClasses = useCustomIconStyles();
 
   // SORTING
   const [sorting, setSorting] = useState<any[]>(store.get(`datagrid_${id}_sorting`) || options?.sort?.defaultSorting || []);
@@ -127,7 +133,7 @@ const DataGrid: FC<DataGridProps> = ({
   }, [rows, pageSize, currentPage]);
 
   // FIXED COLUMNS
-  const [isFirstColumnPinned] = useState<boolean>(!!options?.fixed?.pinnableFirstColumn);
+  const [isFirstColumnPinned, setFirstColumnPinned] = useState<boolean>(!!options?.fixed?.pinnableFirstColumn);
 
   const fixedColumns = useMemo(
     () => ([
@@ -137,29 +143,32 @@ const DataGrid: FC<DataGridProps> = ({
     [options?.fixed, columns, isFirstColumnPinned],
   );
 
+  // FIXED COLUMNS
+  const toggleFirstColumnPinned = useCallback(() => setFirstColumnPinned(p => !p), []);
+
   // HEADER COMPONENTS
-  // const headerComponents: DataGridPluginDefinition[] = useMemo(() => {
-  //   const pinLabel = isFirstColumnPinned
-  //     ? 'Unpin first column'
-  //     : 'Pin first column';
-  //   return ([
-  //     ...(options?.fixed?.pinnableFirstColumn ? [{
-  //       key: 'pinnableFirstColumn',
-  //       children: (
-  //         <DefaultActionIconButton
-  //           onClick={toggleFirstColumnPinned}
-  //           tooltipTitle={pinLabel}
-  //           aria-label={pinLabel}
-  //         >
-  //           {isFirstColumnPinned ? (<PinOffIcon className={iconClasses.customIcon} />) : (<PinIcon className={iconClasses.customIcon} />)}
-  //         </DefaultActionIconButton>
-  //       ),
-  //       position: DataGridPluginPosition.rightEnd,
-  //     }] : []),
-  //     ...(options?.additionalHeaderComponents || []).map(ahc => ({ key: ahc.key, children: ahc.children, position: ahc.position })),
-  //   ]);
-  // }, [options?.additionalHeaderComponents, isFirstColumnPinned, options?.fixed?.pinnableFirstColumn,
-  //   toggleFirstColumnPinned, iconClasses]);
+  const headerComponents: DataGridPluginDefinition[] = useMemo(() => {
+    const pinLabel = isFirstColumnPinned
+      ? 'Unpin first column'
+      : 'Pin first column';
+    return ([
+      ...(options?.fixed?.pinnableFirstColumn ? [{
+        key: 'pinnableFirstColumn',
+        children: (
+          <DefaultActionIconButton
+            onClick={toggleFirstColumnPinned}
+            tooltipTitle={pinLabel}
+            aria-label={pinLabel}
+          >
+            {isFirstColumnPinned ? (<PinOffIcon className={iconClasses.customIcon} />) : (<PinIcon className={iconClasses.customIcon} />)}
+          </DefaultActionIconButton>
+        ),
+        position: DataGridPluginPosition.rightEnd,
+      }] : []),
+      ...(options?.additionalHeaderComponents || []).map(ahc => ({ key: ahc.key, children: ahc.children, position: ahc.position })),
+    ]);
+  }, [options?.additionalHeaderComponents, isFirstColumnPinned, options?.fixed?.pinnableFirstColumn,
+    toggleFirstColumnPinned, iconClasses]);
 
   return (
     <Grid
@@ -242,7 +251,7 @@ const DataGrid: FC<DataGridProps> = ({
         messages={messages.TableHeaderRow}
       />
       {(fixedColumns) && (<TableFixedColumns leftColumns={fixedColumns} />)}
-      {/* <DataGridPlugins plugins={Object.values(headerComponents || [])} /> */}
+      <DataGridPlugins plugins={Object.values(headerComponents || [])} />
 
     </Grid>
   );

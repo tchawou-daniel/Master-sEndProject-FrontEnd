@@ -1,7 +1,7 @@
 import { Box, Paper } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import React, {
-  FC, memo, useCallback, useEffect, useState,
+  FC, memo, useCallback, useEffect, useMemo, useState,
 } from 'react';
 import { useSelector } from 'react-redux';
 import useAsyncEffect from 'use-async-effect';
@@ -12,15 +12,16 @@ import { useThunkDispatch } from 'redux/store';
 
 import useSnackbars from '../../../react/common/useSnackbars';
 import { WorkerFormAddModal } from '../../../react/ui/Business/workerModals/WorkerFormAddModal';
+import WorkerFormEditModal from '../../../react/ui/Business/workerModals/WorkerFormEditModal';
 import { TertiaryBlockButton } from '../../../react/ui/Generic/Button/Button';
 import { DataGridPropsOptions } from '../../../react/ui/tables/DataGrid/Datagrid.props';
 import { DataGridPluginPosition } from '../../../react/ui/tables/DataGrid/DataGridComponents/DataGridPlugin';
 import { SmallerGroupCellComponent, SmallerHeaderCellComponent } from '../../../react/ui/tables/DataGrid/DataGridComponents/NativeComponents';
-import { fetchWorkers } from '../../../redux/workers/actions';
+import { deleteWorker, fetchWorkers } from '../../../redux/workers/actions';
 import { selectWorkers } from '../../../redux/workers/selectors';
 import { createAWorker } from '../../../services/auth/authentification.repository';
-import { updateWorker } from '../../../services/users/users.repository';
-import { User } from '../../../types/users';
+import { getWorkers, updateWorker } from '../../../services/workers/workers.repository';
+import { User, UserRole } from '../../../types/users';
 
 import WorkersTable from './WorkersTable';
 
@@ -29,6 +30,8 @@ const columns = [
   { name: 'firstName', title: 'firstName' },
   { name: 'lastName', title: 'lastName' },
   { name: 'email', title: 'email' },
+  { name: 'role', title: 'role' },
+  { name: 'actions', title: 'Actions' },
 ];
 
 const WorkersPage: FC = () => {
@@ -39,28 +42,37 @@ const WorkersPage: FC = () => {
   useAsyncEffect(async () => {
     await dispatch(fetchWorkers());
   }, [dispatch]);
-
   const workers = useSelector(selectWorkers);
 
-  useEffect(() => {
-    // const res = await getWorkers();
-    setAllWorkers(workers);
+  useAsyncEffect(async () => {
+    const resWorkers = await getWorkers();
+    setAllWorkers(resWorkers?.filter(worker => ([UserRole.PERMANENT_WORKER, UserRole.TEMPORARY_WORKER].map(role => role).includes(worker.role))));
   }, [workers]);
-  // console.log('qsdoifpqsd');
-  // console.log(workers);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState<boolean>(false);
   const closeAddModal = useCallback(() => setAddModalOpen(false), [setAddModalOpen]);
 
-  // const getData = useCallback(async () => {
-  //   try {
-  //     const res = await getWorkers();
-  //     setAllWorkers(res);
-  //   } catch (e) {
-  //     snackError(e);
-  //   }
-  // }, [snackError]);
+  const DATAGRID_OPTIONS: DataGridPropsOptions = useMemo(() => ({
+    pages: {
+      paginable: true,
+    },
+    sort: {
+      sortable: true,
+    },
+    // Enable search
+    search: {
+      searchable: true,
+    },
+    fullWidth: false,
+    tableHeaderRowComponent: SmallerHeaderCellComponent,
+    tableGroupRowComponent: SmallerGroupCellComponent,
+  }), []);
+
+  const getData = useCallback(async () => {
+    const workersResults = await getWorkers();
+    setAllWorkers(workersResults.filter(worker => ([UserRole.PERMANENT_WORKER, UserRole.TEMPORARY_WORKER].map(role => role).includes(worker.role))));
+  }, []);
 
   // create Worker
   const handleValidateWorker = useCallback(async (formValues:Partial<User>):Promise<void> => {
@@ -74,80 +86,53 @@ const WorkersPage: FC = () => {
 
     try {
       await createAWorker(workerToAdd);
-      // await getData();
+      await getData();
       snackSuccess('Worker created!');
       setAddModalOpen(false);
     } catch (e) {
       snackError(`Worker not created! ${e}`);
     }
     setAddModalOpen(false);
-  }, [snackSuccess, snackError]);
+  }, [getData, snackSuccess, snackError]);
 
-  // company/rates/RateTable  editTable
-  const onCommitChanges = useCallback(({ changed }: any) => {
-    console.log(changed);
-    if (changed) {
-      // Loop through lines that changed
-      Object.keys(changed).filter(ind => !!changed[ind]).map(parseInt).forEach((rowIndex: number) => {
-        console.log(rowIndex);
-        console.log(changed[rowIndex]);
-        console.log(Object.keys(changed).filter(ind => !!changed[ind]));
-        console.log(Object.keys(changed).filter(ind => !!changed[ind]).map(parseInt));
-        console.log(Object.keys(changed[rowIndex]).filter(ind => !!changed[rowIndex][ind]));
-        console.log(Object.keys(changed[rowIndex]).filter(ind => !!changed[rowIndex][ind]).map(parseInt));
-        // Loop through values that changed in this line
-        let newValue;
-        Object.keys(changed[rowIndex]).filter(ind => !!changed[rowIndex][ind]).forEach(async (columnIndex: string) => {
-          newValue = changed[rowIndex][columnIndex];
-          // await updateUser({
-          //   ...allWorkers[rowIndex],
-          //
-          // });
-          await updateWorker({ ...allWorkers[rowIndex], ...changed[rowIndex] });
-          // console.log({ ...allWorkers[rowIndex], ...changed[rowIndex] });
-          console.log(newValue);
-          console.log(allWorkers);
-          console.log(rowIndex);
-          // console.log(allWorkers[rowIndex]);
-        });
-      });
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedWorkers, setSelectedWorkers] = useState<User | null>(null);
+  const handleCancel = useCallback(() => setIsFormOpen(false), [setIsFormOpen]);
+
+  const openForm = useCallback((agencyUsersDefinition: User | null) => {
+    setIsFormOpen(true);
+    setSelectedWorkers(agencyUsersDefinition);
+  }, []);
+
+  const handleDeleteWorkers = useCallback(async (agencyUsersId: string) => {
+    await dispatch(deleteWorker(agencyUsersId));
+    await getData();
+  }, [dispatch, getData]);
+
+  const listActions = useMemo(() => ({
+    onClickEdit: openForm,
+    onClickDelete: handleDeleteWorkers,
+  }), [openForm, handleDeleteWorkers]);
+
+  const handleEditWorker = useCallback(async (formValues:Partial<User>) => {
+    const workerToEdit = {
+      id: formValues.id,
+      firstName: formValues.firstName,
+      lastName: formValues.lastName,
+      email: formValues.email,
+      role: formValues.role,
+    } as unknown as User;
+
+    try {
+      await updateWorker(workerToEdit);
+      await getData();
+      snackSuccess('User updated!');
+      setIsFormOpen(false);
+    } catch (e) {
+      snackError(`user not updated! ${e}`);
     }
-  }, [allWorkers]);
-
-  const DATAGRID_OPTIONS: DataGridPropsOptions = {
-    pages: {
-      paginable: true,
-    },
-    columnVisibility: {
-      active: true,
-    },
-    sort: {
-      sortable: true,
-    },
-    // grouping: {
-    //   grouping: [{ columnName: 'workerName' }],
-    // },
-    // Enable search
-    search: {
-      searchable: true,
-    },
-    additionalHeaderComponents: [
-      {
-        key: 'title',
-        children: (
-          <Box>All Workers</Box>
-        ),
-        position: DataGridPluginPosition.rightStart,
-      },
-    ],
-    fullWidth: false,
-    tableHeaderRowComponent: SmallerHeaderCellComponent,
-    tableGroupRowComponent: SmallerGroupCellComponent,
-    cellEdit: {
-      active: true,
-      onCommitChanges,
-    },
-  };
+    setIsFormOpen(false);
+  }, [getData, snackSuccess, snackError]);
 
   return (
     <>
@@ -174,11 +159,17 @@ const WorkersPage: FC = () => {
 
       </Paper>
       <Paper>
-
+        <WorkerFormEditModal
+          worker={selectedWorkers}
+          isOpen={isFormOpen}
+          handleCancel={handleCancel}
+          handleSubmit={handleEditWorker}
+        />
         <WorkersTable
           rows={allWorkers || []}
           columns={columns}
           datagridOptions={DATAGRID_OPTIONS}
+          actions={listActions}
         />
       </Paper>
     </>

@@ -1,7 +1,6 @@
-import { isEqual } from 'lodash';
 import React, { useEffect } from 'react';
 import {
-  Route, RouteComponentProps, useLocation,
+  Route, useLocation,
 } from 'react-router-dom';
 
 import { ProtectedRoute } from './react/common/routeHelpers';
@@ -11,6 +10,7 @@ import Home from './react/views/home/Home';
 import Login from './react/views/user/auth/Login';
 import Profile from './react/views/user/auth/Profile';
 import Register from './react/views/user/auth/Register';
+import AgencyRoutes from './views/Agency/agency.routes';
 import CompanyRoutes from './views/Companies/company.routes';
 import WorkerRoutes from './views/Workers/worker.routes';
 
@@ -18,8 +18,6 @@ import WorkerRoutes from './views/Workers/worker.routes';
 
 function App() {
   const { user } = useCurrentUser();
-  // console.log(`user ${user}`);
-  // const user = { email: 'sipetchawou@gmail.com' };
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -40,6 +38,7 @@ function App() {
       <ProtectedRoute path="/profile" user={user} component={Profile} />
       <ProtectedRoute path="/companies" user={user} component={CompanyRoutes} />
       <ProtectedRoute path="/workers" user={user} component={WorkerRoutes} />
+      <ProtectedRoute path="/agency" user={user} component={AgencyRoutes} />
       {/* <ProtectedRoute path="/agencyusers" user={user} component={CompanyRoutes} /> */}
       {/* <ProtectedRoute path="/allworkers" user={user} component={CompanyRoutes} /> */}
       {/* ADMIN & EMPLOYMENT_AGENCY */}
@@ -74,7 +73,4 @@ function App() {
   );
 }
 
-const RouterPage = (
-  props: { pageComponent: JSX.Element } & RouteComponentProps,
-) => props.pageComponent;
 export default App;

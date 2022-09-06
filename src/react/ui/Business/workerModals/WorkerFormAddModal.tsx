@@ -1,12 +1,9 @@
 import {
-  Box,
-  Dialog, DialogActions, DialogContent, MenuItem,
+  Box, Dialog, DialogActions, DialogContent, MenuItem,
 } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import { Form, Formik } from 'formik';
-import React, {
-  FC, memo,
-} from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import * as Yup from 'yup';
 
 import DialogTitleWithCloseButton from 'react/ui/Generic/DialogTitleWithCloseButton';
@@ -36,13 +33,13 @@ const workerSchema = Yup.object().shape({
 export const WorkerFormAddModal: FC<WorkerFormAddProps> = ({
   isOpen, onCancel, onSubmit,
 }) => {
-  const initialValues = {
+  const initialValues = useMemo(() => ({
     firstName: '',
     lastName: '',
     email: '',
     role: UserRole.TEMPORARY_WORKER,
     password: 'SuperSecretP4word',
-  };
+  }), []);
 
   const [userRole, setUserRole] = React.useState<string | UserRole>(UserRole.TEMPORARY_WORKER);
 
@@ -106,7 +103,7 @@ export const WorkerFormAddModal: FC<WorkerFormAddProps> = ({
                   value={userRole}
                   onChange={handleChangeUserRole}
                 >
-                  {Object.values(UserRole).map(option => (
+                  {([UserRole.TEMPORARY_WORKER, UserRole.PERMANENT_WORKER]).map(option => (
                     <MenuItem key={option} value={option}>
                       {option}
                     </MenuItem>

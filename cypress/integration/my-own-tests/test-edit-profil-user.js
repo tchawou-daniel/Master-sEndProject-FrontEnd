@@ -16,7 +16,7 @@ describe('Edit the profil user', () => {
     cy.contains('Already have an account? Sign Up').click({ force: true });
     cy.url().should('eq', 'http://localhost:3000/auth/login/callback');
 
-    cy.get('[name="email"]').type('jeremi@gmail.com', { force: true });
+    cy.get('[name="email"]').type('jeremi@hotmail.com', { force: true });
     cy.get('[name="password"]').type('SuperSecretP4word', { force: true });
     cy.contains('Submit').click({ force: true });
 
@@ -30,7 +30,7 @@ describe('Edit the profil user', () => {
     cy.get('[name="lastName"]').clear();
     cy.get('[name="lastName"]').type('the new last name', { force: true });
     cy.get('[name="email"]').clear();
-    cy.get('[name="email"]').type('jeremi@gmail.com', { force: true });
+    cy.get('[name="email"]').type('jeremi@hotmail.com', { force: true });
     cy.contains('Submit').click({ force: true });
   });
 });
